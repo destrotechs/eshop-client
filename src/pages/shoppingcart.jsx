@@ -1,95 +1,157 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import { XMarkIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
+import FormattedPrice from "../assets/formatedprice";
 
-const ShoppingCart = () => {
+// Sample dummy data
+const defaultCartItems = [
+  {
+    id: 1,
+    name: "Product 1",
+    price: 19.99,
+    quantity: 2,
+    imageUrl: "https://via.placeholder.com/150"
+  },
+  {
+    id: 2,
+    name: "Product 2",
+    price: 29.99,
+    quantity: 1,
+    imageUrl: "https://via.placeholder.com/150"
+  },
+  {
+    id: 3,
+    name: "Product 3",
+    price: 9.99,
+    quantity: 3,
+    imageUrl: "https://via.placeholder.com/150"
+  }
+];
+
+const ShoppingCart = ({ cartItems = defaultCartItems, onUpdateQuantity, onRemoveItem }) => {
+  const [items, setItems] = useState(cartItems);
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [taxRate] = useState(0.07); // 7% tax rate
+
+  useEffect(() => {
+    setItems(cartItems);
+  }, [cartItems]);
+
+  const handleQuantityChange = (itemId, change) => {
+    onUpdateQuantity(itemId, change);
+    setItems(items.map(item => 
+      item.id === itemId ? { ...item, quantity: item.quantity + change } : item
+    ));
+  };
+
+  const handleRemoveItem = (itemId) => {
+    onRemoveItem(itemId);
+    setItems(items.filter(item => item.id !== itemId));
+  };
+
+  const handleCouponApply = () => {
+    // Simulate coupon application
+    if (couponCode === "DISCOUNT10") {
+      setDiscount(0.10); // 10% discount
+    } else {
+      setDiscount(0);
+    }
+  };
+
+  const subtotal = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  const tax = subtotal * taxRate;
+  const discountAmount = subtotal * discount;
+  const totalPrice = subtotal + tax - discountAmount;
+
   return (
-    <section className="py-24 relative">
-      <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
-        <h2 className="title font-manrope font-bold text-4xl leading-10 mb-8 text-center text-black">
-          Shopping Cart
-        </h2>
-        <div className="hidden lg:grid grid-cols-2 py-6">
-          <div className="font-normal text-xl leading-8 text-gray-500">Product</div>
-          <p className="font-normal text-xl leading-8 text-gray-500 flex items-center justify-between">
-            <span className="w-full max-w-[200px] text-center">Delivery Charge</span>
-            <span className="w-full max-w-[260px] text-center">Quantity</span>
-            <span className="w-full max-w-[200px] text-center">Total</span>
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 min-[550px]:gap-6 border-t border-gray-200 py-6">
-          <div className="flex items-center flex-col min-[550px]:flex-row gap-3 min-[550px]:gap-6 w-full max-xl:justify-center max-xl:max-w-xl max-xl:mx-auto">
-            <div className="img-box">
-              <img
-                src="https://pagedone.io/asset/uploads/1701162850.png"
-                alt="perfume bottle"
-                className="xl:w-[140px] rounded-xl"
-              />
-            </div>
-            <div className="pro-data w-full max-w-sm ">
-              <h5 className="font-semibold text-xl leading-8 text-black max-[550px]:text-center">
-                Latest N-5 Perfume
-              </h5>
-              <p className="font-normal text-lg leading-8 text-gray-500 my-2 min-[550px]:my-3 max-[550px]:text-center">
-                Perfumes
-              </p>
-              <h6 className="font-medium text-lg leading-8 text-indigo-600 max-[550px]:text-center">
-                $120.00
-              </h6>
-            </div>
+    <section className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Shopping Cart</h2>
+        {items.length === 0 ? (
+          <div className="text-center text-gray-500">
+            <p>Your cart is empty.</p>
           </div>
-          <div className="flex items-center flex-col min-[550px]:flex-row w-full max-xl:max-w-xl max-xl:mx-auto gap-2">
-            <h6 className="font-manrope font-bold text-2xl leading-9 text-black w-full max-w-[176px] text-center">
-              $15.00
-              <span className="text-sm text-gray-300 ml-3 lg:hidden whitespace-nowrap">
-                (Delivery Charge)
-              </span>
-            </h6>
-            <div className="flex items-center w-full mx-auto justify-center">
-              <button className="group rounded-l-full px-6 py-[18px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50">
-                <svg className="stroke-gray-900 transition-all duration-500 group-hover:stroke-black" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <path d="M16.5 11H5.5" stroke="" strokeWidth="1.6" strokeLinecap="round" />
-                </svg>
+        ) : (
+          <div>
+            <ul className="space-y-4">
+              {items.map((item) => (
+                <li key={item.id} className="flex items-center justify-between p-4 border rounded-lg shadow-sm">
+                  <div className="flex items-center">
+                    <img
+                      src={item.imageUrl || "/path/to/placeholder-image.jpg"}
+                      alt={item.name}
+                      className="w-24 h-24 object-cover rounded-lg mr-4"
+                    />
+                    <div>
+                      <p className="text-gray-900 font-medium">{item.name}</p>
+                      <p className="text-gray-500"><FormattedPrice price={item.price}/></p>
+                      <div className="flex items-center mt-2">
+                        <button
+                          onClick={() => handleQuantityChange(item.id, -1)}
+                          disabled={item.quantity <= 1}
+                          className="p-1 rounded border border-gray-300 hover:bg-gray-200"
+                        >
+                          <MinusIcon className="w-5 h-5 text-gray-600" />
+                        </button>
+                        <span className="mx-4">{item.quantity}</span>
+                        <button
+                          onClick={() => handleQuantityChange(item.id, 1)}
+                          className="p-1 rounded border border-gray-300 hover:bg-gray-200"
+                        >
+                          <PlusIcon className="w-5 h-5 text-gray-600" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleRemoveItem(item.id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <XMarkIcon className="w-6 h-6" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 mb-6">
+              <div className="flex mb-4">
+                <input
+                  type="text"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  placeholder="Enter coupon code"
+                  className="border p-2 rounded-md mr-2 flex-grow"
+                />
+                <button
+                  onClick={handleCouponApply}
+                  className="bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:bg-indigo-700"
+                >
+                  Apply Coupon
+                </button>
+              </div>
+              <div className="flex justify-between mb-4">
+                <p className="text-gray-900 font-medium">Subtotal:</p>
+                <FormattedPrice price={subtotal} />
+              </div>
+              <div className="flex justify-between mb-4">
+                <p className="text-gray-900 font-medium">Discount:</p>
+                <FormattedPrice price={-discountAmount} />
+              </div>
+              <div className="flex justify-between mb-4">
+                <p className="text-gray-900 font-medium">Tax (7%):</p>
+                <FormattedPrice price={tax} />
+              </div>
+              <div className="flex justify-between mb-6">
+                <p className="text-2xl font-bold text-gray-900">Total:</p>
+                <FormattedPrice price={totalPrice} />
+              </div>
+            </div>
+            <div className="mt-6 flex justify-between items-center">
+              <button className="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-700">
+                Checkout
               </button>
-              <input
-                type="text"
-                className="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[118px] min-w-[80px] placeholder:text-gray-900 py-[15px] text-center bg-transparent"
-                placeholder="1"
-              />
-              <button className="group rounded-r-full px-6 py-[18px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50">
-                <svg className="stroke-gray-900 transition-all duration-500 group-hover:stroke-black" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <path d="M11 5.5V16.5M16.5 11H5.5" stroke="" strokeWidth="1.6" strokeLinecap="round" />
-                </svg>
-              </button>
             </div>
-            <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 w-full max-w-[176px] text-center">
-              $120.00
-            </h6>
           </div>
-        </div>
-
-        {/* Additional Products */}
-        {/* Repeat the block structure for additional products */}
-
-        <div className="bg-gray-50 rounded-xl p-6 w-full mb-8 max-lg:max-w-xl max-lg:mx-auto">
-          <div className="flex items-center justify-between w-full mb-6">
-            <p className="font-normal text-xl leading-8 text-gray-400">Sub Total</p>
-            <h6 className="font-semibold text-xl leading-8 text-gray-900">$360.00</h6>
-          </div>
-          <div className="flex items-center justify-between w-full pb-6 border-b border-gray-200">
-            <p className="font-normal text-xl leading-8 text-gray-400">Delivery Charge</p>
-            <h6 className="font-semibold text-xl leading-8 text-gray-900">$45.00</h6>
-          </div>
-          <div className="flex items-center justify-between w-full py-6">
-            <p className="font-manrope font-medium text-2xl leading-9 text-gray-900">Total</p>
-            <h6 className="font-manrope font-medium text-2xl leading-9 text-indigo-500">$405.00</h6>
-          </div>
-        </div>
-
-        <div className="flex items-center flex-col sm:flex-row justify-center gap-3 mt-8">
-          <button className="rounded-full py-4 w-full max-w-[280px] flex items-center bg-indigo-50 justify-center transition-all duration-500 hover:bg-indigo-100">
-            <span className="px-2 font-semibold text-lg leading-8 text-indigo-600">Add Coupon Code</span>
-          </button>
-        </div>
+        )}
       </div>
     </section>
   );
