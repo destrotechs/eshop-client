@@ -13,6 +13,7 @@ import ProductList from './pages/productlist';
 import Profile from './pages/myaccount';
 import ShoppingCart from './pages/shoppingcart';
 import ProductOverview from './pages/productOverview';
+import Signup from './auth/signup';
 function App() {
   const dispatch = useDispatch();
 
@@ -32,6 +33,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/signin" element={<SignIn/>}></Route>
+        <Route path="/signup" element={<Signup/>}></Route>
         <Route path="/" element={<MainLayout><Dashboad/></MainLayout>}> </Route>
           <Route path="/categories/:category_code" element={<MainLayout><ProductList/></MainLayout>}></Route>
           <Route path="/products/" element={<MainLayout><ProductList/></MainLayout>}></Route>
