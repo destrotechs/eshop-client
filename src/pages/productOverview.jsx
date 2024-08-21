@@ -5,14 +5,15 @@ import apiClient from '../auth/apiClient';
 import FormattedPrice from '../assets/formatedprice';
 import { toSentenceCase } from '../assets/textUtil';
 import Breadcrumb from '../assets/breadCrump';
-
+import Toast from '../assets/Toast';
 const ProductOverview = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isViewerOpen, setIsViewerOpen] = useState(false); // State for image viewer
   const [selectedImageIndex, setSelectedImageIndex] = useState(0); // State for the selected image index
-
+  const [toastMessage, setToastMessage] = useState('');
+  const [showToast, setShowToast] = useState(false);
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -57,6 +58,21 @@ const ProductOverview = () => {
   if (!product) {
     return <div>Product not found</div>;
   }
+
+  const handleAddToCart = async(product) => {
+    // Implement add to cart functionality
+    const response = await apiClient.post('/api/shopping/cart/',{'product_id':product.id});
+    if (response.status===200){
+            setToastMessage(response.data.message);
+            setShowToast(true);
+            console.log("Add to cart ",response.data);
+            console.log('Added to cart:', product);
+    }else{
+        setToastMessage('Failed to add item to cart.');
+            setShowToast(true);
+    }
+    
+};
 
   const sliderSettings = {
     dots: true,
@@ -147,7 +163,7 @@ const ProductOverview = () => {
 
               {/* Add to Cart */}
               <div className="mt-6 flex items-center space-x-3">
-                <button className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">
+                <button onClick={() => handleAddToCart(product)} className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">
                   Add to Cart
                 </button>
                 <button className="bg-gray-100 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-200">
@@ -189,6 +205,11 @@ const ProductOverview = () => {
           </div>
         </div>
       )}
+      <Toast
+                message={toastMessage}
+                show={showToast}
+                onClose={() => setShowToast(false)}
+            />
     </>
   );
 };

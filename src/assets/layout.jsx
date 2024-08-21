@@ -13,7 +13,7 @@ const MainLayout = ({children})=>{
         dispatch(logout());
     };
     return(
-        <div className="lex justify-content-start bg-gray-100">
+        <div className="bg-gray-100">
             <Navbar isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout}/>
             <MainContent>
             {children}

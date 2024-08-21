@@ -1,5 +1,5 @@
 import React, { useState,useRef,useEffect } from "react";
-import { UserCircleIcon, MapPinIcon, CreditCardIcon, ListBulletIcon } from "@heroicons/react/24/outline";
+import { UserCircleIcon, MapPinIcon, CreditCardIcon, ListBulletIcon,PlusIcon,DocumentIcon } from "@heroicons/react/24/outline";
 import apiClient from "../auth/apiClient";
 
 const Profile = () => {
@@ -134,7 +134,7 @@ const Profile = () => {
         <main className="lg:col-span-3 space-y-8">
           {/* Personal Info */}
           <div ref={personalInfoRef} className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Personal Info</h2>
+            <h2 className="text-1xl font-medium text-gray-600 mb-6">Personal Info</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               
             <div className="sm:col-span-2">
@@ -172,8 +172,9 @@ const Profile = () => {
               </div>
             </div>
             <div className="mt-6">
-              <button onClick={handleSavePersonalInfo} className="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-700">
-                Save Changes
+              <button onClick={handleSavePersonalInfo} className="bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:bg-indigo-700 flex items-center">
+                <DocumentIcon className="w-6 h-6 mr-2" /> {/* Use alternative icon */}
+                <span>Save Changes</span>
               </button>
             </div>
           </div>
@@ -181,7 +182,7 @@ const Profile = () => {
           {/* Shipping Addresses */}
           
           <div ref={addressesRef} className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Shipping Addresses</h2>
+            <h2 className="text-1xl font-medium text-gray-600 mb-6">Shipping Addresses</h2>
             {addresses.length > 0 ? (
                 <ul className="space-y-4">
                     {addresses.map((address, index) => (
@@ -204,15 +205,16 @@ const Profile = () => {
             )}
 
             <div className="mt-6">
-              <button onClick={handleAddAddress} className="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-700">
-                Add New Address
+              <button onClick={handleAddAddress} className="bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:bg-indigo-700 flex items-center">
+                <PlusIcon className="w-6 h-6 mr-2" /> {/* Align icon with spacing */}
+                <span>New Address</span>
               </button>
             </div>
           </div>
 
           {/* Payment Methods */}
           <div ref={paymentMethodsRef} className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Payment Methods</h2>
+            <h2 className="text-1xl font-medium text-gray-600 mb-6">Payment Methods</h2>
             {paymentMethods.length>0?(
                 <ul className="space-y-4">
               {paymentMethods.map((method, index) => (
@@ -238,15 +240,17 @@ const Profile = () => {
             )}
             
             <div className="mt-6">
-              <button onClick={handleAddPaymentMethod} className="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-700">
-                Add New Payment Method
+              <button onClick={handleAddPaymentMethod} className="bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:bg-indigo-700 flex items-center">
+                <PlusIcon className="w-6 h-6 mr-2" /> {/* Icon with right margin for spacing */}
+                <span>Payment Method</span>
               </button>
             </div>
+
           </div>
 
           {/* Orders */}
           <div ref={ordersRef} className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Order History</h2>
+            <h4 className="text-1xl font-medium text-gray-600 mb-6">Order History</h4>
             {ordersRef.length>0?(
                 <>
                 <ul className="space-y-4">

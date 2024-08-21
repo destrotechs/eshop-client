@@ -8,15 +8,16 @@ import {
 } from '@heroicons/react/24/outline'; // Updated imports
 import apiClient from '../auth/apiClient';
 import { toSentenceCase } from './textUtil';
-
+import { useSelector } from 'react-redux';
 const Navbar = ({ isLoggedIn, onLogout, user }) => {
-    const [categories, setCategories] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [categories, setCategories] = useState([]);
+    
     const [suggestions, setSuggestions] = useState([]);
     const [selectedSuggestion, setSelectedSuggestion] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [cart, setCart] = useState(null);
-
+    const cartItemCount = 3;
     useEffect(() => {
         // Fetch categories from the API
         const fetchCategories = async () => {
@@ -31,16 +32,19 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
 
         fetchCategories();
         fetchCart(); // Fetch cart items when the component mounts
+
     }, []);
     const fetchCart= async () => {
         try {
             const response = await apiClient.get('api/shopping/cart'); // Replace with your API endpoint
             console.log("Cart status ", response.data); // Adjust based on your API response structure
+             // Adjust based on your API response structure
         } catch (error) {
             console.error('Error fetching cart:', error);
         }
 
     };
+   
     useEffect(() => {
         // Fetch search suggestions based on the current search query
         const fetchSuggestions = async () => {
@@ -189,9 +193,16 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                             </Menu>
 
                             {/* Cart */}
-                            <Link to="/shoppingcart" className="text-gray-800 hover:text-gray-600">
-                                <ShoppingCartIcon className="w-6 h-6" />
-                            </Link>
+                            <div className="relative">
+                                <Link to="/shoppingcart" className="text-gray-800 hover:text-gray-600">
+                                    <ShoppingCartIcon className="w-6 h-6" />
+                                    {cartItemCount > 0 && (
+                                    <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-indigo-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+                                        {cartItemCount}
+                                    </span>
+                                    )}
+                                </Link>
+                            </div>
 
                             {/* Wishlist */}
                             <Link to="/wishlist" className="text-gray-800 hover:text-gray-600">
