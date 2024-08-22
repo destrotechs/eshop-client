@@ -14,6 +14,7 @@ const chunkArray = (array, size) => {
 
 const ProductList = () => {
     const {category_code} = useParams();
+    const {common_name} = useParams();
     const [products, setProducts] = useState([]);
     const breadcrumbPaths = [
       { label: 'Home', href: '/' },
@@ -24,7 +25,7 @@ const ProductList = () => {
         fetchProducts();
 
     }, []);
-
+console.log("search",common_name);
     const fetchProducts = async () => {
         const response = await apiClient.get('/api/products');
         if (response.status === 200) {
@@ -34,9 +35,28 @@ const ProductList = () => {
         setProducts([]);
         }
     }
-    const productChunks = chunkArray(category_code
-        ? products.filter(product => product.category.category_code === category_code)
-        : products, 4);
+    // const productChunks = chunkArray(category_code
+    //     ? products.filter(product => product.category.category_code === category_code)
+    //     : products, 4);
+    const productChunks = chunkArray(
+      products.filter(product => {
+        if (common_name && !category_code) {
+          // Filter by common_name if it exists and category_code does not
+          return product.name?.toLowerCase().includes(common_name?.toLowerCase());
+        } else if (!common_name && category_code) {
+          // Filter by category_code if it exists and common_name does not
+          return product.category.category_code === category_code;
+        } else if (common_name && category_code) {
+          // Filter by both if both exist
+          return product.category?.category_code === category_code &&
+                 product.name?.toLowerCase().includes(common_name?.toLowerCase());
+        } else {
+          // No filters, return all products
+          return true;
+        }
+      }),
+      4
+    );
     
         return (
           <>

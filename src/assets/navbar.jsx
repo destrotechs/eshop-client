@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import { Menu } from '@headlessui/react';
 import {
     ChevronDownIcon, ShoppingCartIcon, ListBulletIcon, HeartIcon, 
@@ -34,6 +34,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
         fetchCart(); // Fetch cart items when the component mounts
 
     }, []);
+   const  navigate = useNavigate();
     const fetchCart= async () => {
         try {
             const response = await apiClient.get('api/shopping/cart'); // Replace with your API endpoint
@@ -48,10 +49,11 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
     useEffect(() => {
         // Fetch search suggestions based on the current search query
         const fetchSuggestions = async () => {
-            if (searchQuery.length > 2) {
+            if (searchQuery?.length > 2) {
                 try {
-                    const response = await axios.get(`http://127.0.0.1:8001/api/search/suggestions`, { params: { query: searchQuery } });
-                    setSuggestions(response.data.suggestions); // Adjust based on your API response structure
+                    const response = await apiClient.get(`api/search/suggestions/`+searchQuery);
+                    console.log("Suggestions", response); // Adjust based on your API response
+                    setSuggestions(response.data.data); // Adjust based on your API response structure
                 } catch (error) {
                     console.error('Error fetching suggestions:', error);
                 }
@@ -73,10 +75,9 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
         setSuggestions([]);
     };
 
-    const handleSearchSubmit = (e) => {
+    const handleSearchSubmit = async(e) => {
         e.preventDefault();
-        // Handle search submit logic here (e.g., redirect to search results page)
-        console.log('Search for:', searchQuery);
+        navigate('/products/'+searchQuery);
     };
 
     const toggleMenu = () => {
@@ -143,7 +144,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                     </button>
                     {suggestions.length > 0 && (
                         <div className="absolute top-full mt-2 w-full bg-white shadow-lg ring-1 ring-gray-300 max-h-60 overflow-auto z-10 rounded-md">
-                            {suggestions.map((suggestion, index) => (
+                            {suggestions?.map((suggestion, index) => (
                                 <button
                                     key={index}
                                     onClick={() => handleSuggestionClick(suggestion)}

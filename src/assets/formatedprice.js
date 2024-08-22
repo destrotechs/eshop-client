@@ -9,7 +9,7 @@ const FormattedPrice = ({ price }) => {
         }).format(price);
     };
 
-    return <span>Kes. {formatPrice(price)}</span>;
+    return <span className='text-indigo-700 font-bold'>Kes. {formatPrice(price)}</span>;
 };
 
 export default FormattedPrice;

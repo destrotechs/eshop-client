@@ -6,9 +6,11 @@ import FormattedPrice from '../assets/formatedprice';
 import { toSentenceCase } from '../assets/textUtil';
 import Breadcrumb from '../assets/breadCrump';
 import Toast from '../assets/Toast';
+import ProductCard from './productCard';
 const ProductOverview = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [similar_products, setSimilarProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isViewerOpen, setIsViewerOpen] = useState(false); // State for image viewer
   const [selectedImageIndex, setSelectedImageIndex] = useState(0); // State for the selected image index
@@ -20,6 +22,7 @@ const ProductOverview = () => {
         const response = await apiClient.get(`/api/products/${productId}`);
         if (response.status === 200) {
           setProduct(response.data.data.product);
+          setSimilarProduct(response.data.data.similar_products);
           setLoading(false);
         }
       } catch (error) {
@@ -174,7 +177,22 @@ const ProductOverview = () => {
           </div>
         </div>
       </section>
+      {similar_products?.length > 0 && (
+        <section className="py-12 bg-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h4 className="font-medium text-white bg-[#0369a1] rounded-t-lg p-4 text-center text-lg">
+              Similar Products
+            </h4>
+            <div className="flex flex-wrap gap-8 mt-6">
+              {similar_products.map((product, index) => (
+                <ProductCard key={index} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
+      
       {/* Image Viewer Modal */}
       {isViewerOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
