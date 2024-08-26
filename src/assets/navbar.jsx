@@ -225,10 +225,10 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
 
                             {/* Wishlist */}
                             <div className="relative">
-                                <Link to="/wishlist" onClick={closeMobileMenu} className="text-gray-800 hover:text-gray-600">
-                                    <HeartIcon className="w-6 h-6" />
+                                <Link to="/wishlist" onClick={closeMobileMenu} className="text-gray-800 hover:text-blue-600">
+                                    <HeartIcon className="w-6 h-6 text-orange-700" />
                                     {wishlistItemCount > 0 && (
-                                        <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-indigo-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+                                        <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white-700 bg-yellow-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
                                             {wishlistItemCount}
                                         </span>
                                     )}
