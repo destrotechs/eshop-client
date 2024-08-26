@@ -64,6 +64,7 @@ const ProductOverview = () => {
 
   const handleAddToCart = async(product) => {
     // Implement add to cart functionality
+    // await apiClient.get('/sanctum/csrf-cookie');
     const response = await apiClient.post('/api/shopping/cart/',{'product_id':product.id});
     if (response.status===200){
             setToastMessage(response.data.message);
@@ -81,6 +82,7 @@ const ProductOverview = () => {
     dots: true,
     infinite: product.images && product.images.length > 1,
     speed: 500,
+    fade:true,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,

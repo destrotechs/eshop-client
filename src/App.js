@@ -14,6 +14,8 @@ import Profile from './pages/myaccount';
 import ShoppingCart from './pages/shoppingcart';
 import ProductOverview from './pages/productOverview';
 import Signup from './auth/signup';
+import { CartProvider } from './assets/CartContext';
+import { WishlistProvider } from './assets/WishlistContext';
 function App() {
   const dispatch = useDispatch();
 
@@ -30,6 +32,8 @@ function App() {
   }, [dispatch]);
 
   return (
+    <CartProvider>
+      <WishlistProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/signin" element={<SignIn/>}></Route>
@@ -37,12 +41,15 @@ function App() {
         <Route path="/" element={<MainLayout><Dashboad/></MainLayout>}> </Route>
           <Route path="/categories/:category_code" element={<MainLayout><ProductList/></MainLayout>}></Route>
           <Route path="/products/" element={<MainLayout><ProductList/></MainLayout>}></Route>
+          <Route path="/shop/" element={<MainLayout><ProductList/></MainLayout>}></Route>
           <Route path="/products/:common_name" element={<MainLayout><ProductList/></MainLayout>}></Route>
           <Route path='/account' element={<MainLayout><Profile/></MainLayout>}></Route>
           <Route path='/shoppingcart' element={<MainLayout><ShoppingCart/></MainLayout>}></Route>
           <Route path='/product/:productId' element={<MainLayout><ProductOverview/></MainLayout>}></Route>
       </Routes>
     </BrowserRouter>
+    </WishlistProvider>
+    </CartProvider>
   );
 }
 

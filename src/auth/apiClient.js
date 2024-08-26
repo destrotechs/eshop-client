@@ -1,30 +1,22 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 // Create an Axios instance
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8001/', // Base URL for your API
+  baseURL: 'http://localhost:8001/', // Change to localhost
   withCredentials: true, // Ensures cookies are sent with the request
 });
 
-// Add a request interceptor to include the token
+// Add a request interceptor to include the token and CSRF token
 apiClient.interceptors.request.use(
   (config) => {
-    // Retrieve the token from localStorage if available
+    // Retrieve the access token from localStorage
     const token = localStorage.getItem('accessToken');
     if (token) {
       // Set the Authorization header with the token
       config.headers.Authorization = `Bearer ${token}`;
     }
-    // Set Content-Type header to JSON
-    config.headers['Content-Type'] = 'application/json';
-    // config.headers['Accept'] = 'application/json';
-    
-    // Optionally set CSRF token if using one
-    // const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    // if (csrfToken) {
-      // config.headers['X-CSRF-TOKEN'] = '';
-    // }
-    
+
     return config;
   },
   (error) => {
