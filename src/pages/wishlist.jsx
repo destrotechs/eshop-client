@@ -4,27 +4,31 @@ import FormattedPrice from "../assets/formatedprice";
 import apiClient from "../auth/apiClient";
 import { toSentenceCase } from '../assets/textUtil';
 import { useNavigate, Link } from 'react-router-dom';
+import Breadcrumb from '../assets/breadCrump';
+import Toast from '../assets/Toast';
+import { eventEmitter } from '../assets/EventEmitter';
 const Wishlist = () => {
   const [items, setItems] = useState([]);
+  const [toastMessage, setToastMessage] = useState('');
+  const [showToast, setShowToast] = useState(false);
+  const [cart, setCart] = useState({ items: {}, subtotal: 0, total: 0, tax: 0, discount: 0 });
 
   useEffect(() => {
-    const fetchWishlistItems = async () => {
-      try {
-        const response = await apiClient.get("/api/shopping/wishlist"); // Update with your actual API endpoint
-        const itemsArray = Object.values(response.data.data.items);
-        setItems(itemsArray || []);
-      } catch (error) {
-        console.error("Error fetching wishlist data:", error);
-      }
-    };
-
     fetchWishlistItems();
   }, []);
-
-  const handleRemoveFromWishlist = async (itemId) => {
+  const fetchWishlistItems = async () => {
     try {
-      await apiClient.delete(`/api/shopping/wishlist/${itemId}`); // Update with your actual API endpoint
-      setItems(items.filter(item => item.id !== itemId));
+      const response = await apiClient.get("/api/shopping/wishlist"); // Update with your actual API endpoint
+      const itemsArray = Object.values(response.data.data.items);
+      setItems(itemsArray || []);
+    } catch (error) {
+      console.error("Error fetching wishlist data:", error);
+    }
+  };
+  const handleRemoveFromWishlist = async (item) => {
+    try {
+      const response = await apiClient.post(`/api/shopping/wishlist/remove`,{product_id: item.product.id}); // Update with your actual API endpoint
+      fetchWishlistItems();
     } catch (error) {
       console.error("Error removing item from wishlist:", error);
     }
@@ -32,15 +36,23 @@ const Wishlist = () => {
 
   const handleAddToCart = async (item) => {
     try {
-      await apiClient.post("/api/cart", { product_id: item.id }); // Update with your actual API endpoint
+      const response = await apiClient.post("/api/shopping/cart", { product_id: item.product.id }); // Update with your actual API endpoint
       // Optionally, you can show a success message or update state
       console.log(`Added item ${item.id} to cart.`);
+      const updatedCart = response.data.data;
+            setCart(updatedCart);
+
+            // Emit cart update event
+            eventEmitter.emit('cartUpdated', updatedCart);
+      setToastMessage(response.data.message);
+      setShowToast(true);
     } catch (error) {
       console.error("Error adding item to cart:", error);
     }
   };
 
   return (
+    <>
     <section className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-2xl font-semibold text-gray-900 mb-6">Wishlist</h2>
@@ -74,7 +86,7 @@ const Wishlist = () => {
                       <ShoppingCartIcon className="w-6 h-6" />
                     </button>
                     <button
-                      onClick={() => handleRemoveFromWishlist(item.id)}
+                      onClick={() => handleRemoveFromWishlist(item)}
                       className="text-red-500 rounded-md p-2  hover:bg-red-700 hover:text-white transition"
                     >
                       <TrashIcon className="w-6 h-6" />
@@ -87,6 +99,12 @@ const Wishlist = () => {
         )}
       </div>
     </section>
+    <Toast
+    message={toastMessage}
+    show={showToast}
+    onClose={() => setShowToast(false)}
+/>
+</>
   );
 };
 
