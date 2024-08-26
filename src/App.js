@@ -16,6 +16,7 @@ import ProductOverview from './pages/productOverview';
 import Signup from './auth/signup';
 import { CartProvider } from './assets/CartContext';
 import { WishlistProvider } from './assets/WishlistContext';
+import Wishlist from './pages/wishlist';
 function App() {
   const dispatch = useDispatch();
 
@@ -46,6 +47,7 @@ function App() {
           <Route path='/account' element={<MainLayout><Profile/></MainLayout>}></Route>
           <Route path='/shoppingcart' element={<MainLayout><ShoppingCart/></MainLayout>}></Route>
           <Route path='/product/:productId' element={<MainLayout><ProductOverview/></MainLayout>}></Route>
+          <Route path='/wishlist' element={<MainLayout><Wishlist/></MainLayout>}></Route>
       </Routes>
     </BrowserRouter>
     </WishlistProvider>

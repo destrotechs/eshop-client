@@ -124,7 +124,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
 
                     {/* Categories Dropdown */}
                     <Menu as="div" className="relative">
-                        <Menu.Button className="flex items-center text-gray-800 hover:text-gray-600 text-lg font-medium">
+                        <Menu.Button className="flex items-center text-gray-800 hover:text-blue-600 text-lg font-medium">
                             Categories
                             <ChevronDownIcon className="w-5 h-5 ml-2" />
                         </Menu.Button>
@@ -143,7 +143,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                         </Menu.Items>
                     </Menu>
 
-                    <Link to="/products" onClick={closeMobileMenu} className="text-gray-800 hover:text-gray-600 text-lg font-medium flex items-center">
+                    <Link to="/products" onClick={closeMobileMenu} className="text-gray-800 hover:text-blue-600 text-lg font-medium flex items-center">
                         Products
                     </Link>
                 </div>
@@ -181,7 +181,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                         <>
                             {/* User Profile */}
                             <Menu as="div" className="relative">
-                                <Menu.Button className="flex items-center text-gray-800 hover:text-gray-600">
+                                <Menu.Button className="flex items-center text-gray-800 hover:text-blue-600">
                                     <img
                                         src={user.profilePicture || 'https://via.placeholder.com/40'} // Default profile picture URL
                                         alt="Profile"

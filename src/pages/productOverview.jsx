@@ -7,6 +7,9 @@ import { toSentenceCase } from '../assets/textUtil';
 import Breadcrumb from '../assets/breadCrump';
 import Toast from '../assets/Toast';
 import ProductCard from './productCard';
+import { eventEmitter } from '../assets/EventEmitter';
+import { useWishlist } from '../assets/WishlistContext'; // Import WishlistContext
+
 const ProductOverview = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -16,6 +19,10 @@ const ProductOverview = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0); // State for the selected image index
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [cart, setCart] = useState({ items: {}, subtotal: 0, total: 0, tax: 0, discount: 0 });
+
+    const { fetchWishlist } = useWishlist(); // Use WishlistContext
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -67,6 +74,11 @@ const ProductOverview = () => {
     // await apiClient.get('/sanctum/csrf-cookie');
     const response = await apiClient.post('/api/shopping/cart/',{'product_id':product.id});
     if (response.status===200){
+      const updatedCart = response.data.data;
+      setCart(updatedCart);
+
+      // Emit cart update event
+      eventEmitter.emit('cartUpdated', updatedCart);
             setToastMessage(response.data.message);
             setShowToast(true);
             console.log("Add to cart ",response.data);
@@ -76,6 +88,20 @@ const ProductOverview = () => {
             setShowToast(true);
     }
     
+};
+const handleAddToWishlist = async (product) => {
+  // await apiClient.get('/sanctum/csrf-cookie');
+  const response = await apiClient.post('/api/shopping/wishlist/', { 'product_id': product.id });
+  if (response.status === 200) {
+      // eventEmitter.emit('wishlistUpdated', updatedCart);
+      // Fetch updated wishlist
+      await fetchWishlist();
+      setToastMessage(response.data.message);
+      setShowToast(true);
+  } else {
+      setToastMessage('Failed to add item to wishlist.');
+      setShowToast(true);
+  }
 };
 
   const sliderSettings = {
@@ -171,7 +197,7 @@ const ProductOverview = () => {
                 <button onClick={() => handleAddToCart(product)} className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">
                   Add to Cart
                 </button>
-                <button className="bg-gray-100 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-200">
+                <button onClick={()=>handleAddToWishlist(product)} className="bg-gray-100 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-200">
                   Add to Wishlist
                 </button>
               </div>

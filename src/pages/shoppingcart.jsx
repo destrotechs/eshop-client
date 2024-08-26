@@ -4,6 +4,7 @@ import FormattedPrice from "../assets/formatedprice";
 import apiClient from "../auth/apiClient";
 import { toSentenceCase } from '../assets/textUtil';
 import { useNavigate, Link } from 'react-router-dom';
+import Breadcrumb from '../assets/breadCrump';
 const ShoppingCart = () => {
   const [items, setItems] = useState([]);
   const [couponCode, setCouponCode] = useState("");
@@ -11,7 +12,11 @@ const ShoppingCart = () => {
   const [taxRate] = useState(0.07); // 7% tax rate
   const [showModal, setShowModal] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
-
+  const breadcrumbPaths = [
+    { label: 'Home', href: '/' },
+    { label: 'Shop', href: '/shop' },
+    { label: 'Products' }
+  ];
   // Fetch cart data from API
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -67,7 +72,9 @@ const ShoppingCart = () => {
   const totalPrice = subtotal + tax - discountAmount;
 
   return (
-    <section className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <>
+    <Breadcrumb paths={breadcrumbPaths} />
+    <section className="max-w-6xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
       <div className="bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-2xl font-semibold text-gray-900 mb-6">Shopping Cart</h2>
         {items.length === 0 ? (
@@ -200,6 +207,7 @@ const ShoppingCart = () => {
         </div>
       )}
     </section>
+    </>
   );
 };
 
