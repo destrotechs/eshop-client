@@ -38,7 +38,7 @@ console.log("search",common_name);
     // const productChunks = chunkArray(category_code
     //     ? products.filter(product => product.category.category_code === category_code)
     //     : products, 4);
-    const productChunks = chunkArray(
+    const productChunks = Array(
       products.filter(product => {
         if (common_name && !category_code) {
           // Filter by common_name if it exists and category_code does not
@@ -54,8 +54,7 @@ console.log("search",common_name);
           // No filters, return all products
           return true;
         }
-      }),
-      4
+      })
     );
     
         return (

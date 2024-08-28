@@ -54,14 +54,17 @@ const Wishlist = () => {
   return (
     <>
     <section className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Wishlist</h2>
+      <div className="bg-white shadow-sm rounded-xl p-6">
+       
         {items.length === 0 ? (
+          
           <div className="text-center text-gray-500">
+            <center><img src="images/wishlist2.jpg" alt="wishlist" className=""/></center>
             <p>Your wishlist is empty.</p>
           </div>
         ) : (
           <div>
+             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Wishlist</h2>
             <ul className="space-y-4">
               {items.map((item) => (
                 <li key={item.id} className="flex items-center justify-between p-4 border rounded-lg shadow-sm">

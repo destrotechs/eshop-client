@@ -76,13 +76,15 @@ const ShoppingCart = () => {
     <Breadcrumb paths={breadcrumbPaths} />
     <section className="max-w-6xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
       <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Shopping Cart</h2>
+        
         {items.length === 0 ? (
           <div className="text-center text-gray-500">
+            <center><img src={'/images/cart.png'} alt='cart' className='w-80 h-80 m-4'/></center>
             <p>Your cart is empty. Start <Link to="/shop" className="text-blue-600">shopping </Link> to fill it up!</p>
           </div>
         ) : (
           <div>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Shopping Cart</h2>
             <ul className="space-y-4">
               {items.map((item) => (
                 

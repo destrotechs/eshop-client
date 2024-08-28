@@ -102,7 +102,34 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
     };
 
     return (
-        <header className="sticky top-0 bg-white shadow-md z-50">
+        <>
+        <header className="sticky top-0 bg-gradient-to-r from-blue-500 to-indigo-600 text-white z-50 flex justify-between items-center p-4">
+    <div className='flex items-center justify-between px-4 py-4 max-w-screen-xl mx-auto'>
+    <div className="flex text-xl  px-4 max-w-screen-xl font-bold">
+        <Link to={'/'}>shopMATT</Link>
+    </div>
+    <div className="flex space-x-4">
+        <a href="https://www.facebook.com" target="_blank" className="hover:text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M22.676 0h-21.352c-.732 0-1.324.593-1.324 1.324v21.353c0 .73.593 1.323 1.324 1.323h11.497v-9.294h-3.121v-3.621h3.121v-2.673c0-3.066 1.87-4.738 4.598-4.738 1.307 0 2.431.097 2.759.14v3.197l-1.895.001c-1.487 0-1.774.706-1.774 1.743v2.331h3.548l-.463 3.621h-3.085v9.294h6.052c.73 0 1.323-.593 1.323-1.323v-21.353c-.001-.731-.594-1.324-1.325-1.324z"/>
+            </svg>
+        </a>
+        <a href="https://www.twitter.com" target="_blank" className="hover:text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.723-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.719 0-4.92 2.201-4.92 4.917 0 .386.044.762.127 1.124-4.088-.205-7.713-2.164-10.141-5.144-.423.725-.666 1.562-.666 2.456 0 1.694.863 3.188 2.177 4.066-.801-.025-1.554-.245-2.213-.611v.062c0 2.367 1.685 4.342 3.918 4.788-.411.112-.843.171-1.288.171-.315 0-.623-.031-.923-.087.625 1.951 2.436 3.374 4.584 3.413-1.679 1.316-3.797 2.101-6.097 2.101-.396 0-.788-.023-1.175-.069 2.176 1.397 4.757 2.212 7.536 2.212 9.045 0 13.999-7.496 13.999-13.986 0-.213-.005-.425-.014-.636.961-.693 1.797-1.562 2.457-2.549z"/>
+            </svg>
+        </a>
+        <a href="https://www.instagram.com" target="_blank" className="hover:text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.063 2.633.324 3.608 1.299.974.975 1.236 2.242 1.299 3.608.058 1.266.069 1.646.069 4.85s-.012 3.584-.07 4.85c-.063 1.366-.324 2.633-1.299 3.608-.975.974-2.242 1.236-3.608 1.299-1.266.058-1.646.069-4.85.069s-3.584-.012-4.85-.07c-1.366-.063-2.633-.324-3.608-1.299-.974-.975-1.236-2.242-1.299-3.608-.058-1.266-.069-1.646-.069-4.85s.012-3.584.07-4.85c.063-1.366.324-2.633 1.299-3.608.975-.974 2.242-1.236 3.608-1.299 1.266-.057 1.646-.069 4.85-.069zm0-2.163c-3.259 0-3.667.013-4.947.072-1.517.068-2.555.335-3.549 1.33-.994.994-1.262 2.032-1.33 3.549-.059 1.28-.072 1.688-.072 4.947s.013 3.667.072 4.947c.068 1.517.335 2.555 1.33 3.549.994.994 2.032 1.262 3.549 1.33 1.28.059 1.688.072 4.947.072s3.667-.013 4.947-.072c1.517-.068 2.555-.335 3.549-1.33.994-.994 1.262-2.032 1.33-3.549.059-1.28.072-1.688.072-4.947s-.013-3.667-.072-4.947c-.068-1.517-.335-2.555-1.33-3.549-.994-.994-2.032-1.262-3.549-1.33-1.28-.059-1.688-.072-4.947-.072z"/>
+                <path d="M12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.123c-2.187 0-3.961-1.774-3.961-3.961s1.774-3.961 3.961-3.961 3.961 1.774 3.961 3.961-1.774 3.961-3.961 3.961zm6.406-11.845c-.796 0-1.443.648-1.443 1.443 0 .795.648 1.443 1.443 1.443.795 0 1.443-.648 1.443-1.443s-.648-1.443-1.443-1.443z"/>
+            </svg>
+        </a>
+    </div>
+    </div>
+</header>
+
+        <header className="sticky top-0 bg-gradient-to-r from-blue-500 to-indigo-600 text-white z-50">
             <nav className="flex items-center justify-between px-4 py-4 max-w-screen-xl mx-auto">
                 {/* Mobile Menu Toggle */}
                 <button
@@ -118,13 +145,13 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
 
                 {/* Left Menu */}
                 <div className={`flex items-center space-x-6 ${isMenuOpen ? 'block' : 'hidden'} md:flex`}>
-                    <Link to="/" onClick={closeMobileMenu} className="text-gray-800 hover:text-gray-600 text-lg font-medium flex items-center">
-                        <span className="text-indigo-800 font-bold hover:text-indigo-900">ShopMATT</span>
-                    </Link>
+                    {/* <Link to="/" onClick={closeMobileMenu} className="text-white-800 hover:text-gray-600 text-lg font-medium flex items-center">
+                        <span className="text-cream-800 font-bold hover:text-indigo-900">ShopMATT</span>
+                    </Link> */}
 
                     {/* Categories Dropdown */}
                     <Menu as="div" className="relative">
-                        <Menu.Button className="flex items-center text-gray-800 hover:text-blue-600 text-lg font-medium">
+                        <Menu.Button className="flex items-center text-white-800 hover:text-blue-600 text-lg font-medium">
                             Categories
                             <ChevronDownIcon className="w-5 h-5 ml-2" />
                         </Menu.Button>
@@ -143,21 +170,22 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                         </Menu.Items>
                     </Menu>
 
-                    <Link to="/products" onClick={closeMobileMenu} className="text-gray-800 hover:text-blue-600 text-lg font-medium flex items-center">
-                        Products
+                    <Link to="/shop" onClick={closeMobileMenu} className="text-white-800 hover:text-blue-600 text-lg font-medium flex items-center">
+                        Shop
                     </Link>
                 </div>
 
                 {/* Search Input */}
                 <form onSubmit={handleSearchSubmit} className="relative flex-grow mx-6 max-w-md">
+                    <div className='relative w-full'>
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={handleSearchChange}
                         placeholder="Search..."
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
-                    />
-                    <button type="submit" className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-lg flex items-center">
+                        className="w-full px-4 py-2 border border-gray-300 text-gray-900 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    /></div>
+                    <button type="submit" className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-2 text-gray-700 hover:bg-gray-400 hover:text-white rounded-full flex items-center">
                         <MagnifyingGlassIcon className="w-5 h-5" />
                     </button>
                     {suggestions.length > 0 && (
@@ -181,16 +209,12 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                         <>
                             {/* User Profile */}
                             <Menu as="div" className="relative">
-                                <Menu.Button className="flex items-center text-gray-800 hover:text-blue-600">
-                                    <img
-                                        src={user.profilePicture || 'https://via.placeholder.com/40'} // Default profile picture URL
-                                        alt="Profile"
-                                        className="w-10 h-10 rounded-full border border-gray-300"
-                                    />
-                                    <ChevronDownIcon className="w-5 h-5 ml-2" />
+                                <Menu.Button className="flex items-center text-white-800 hover:text-blue-600">
+                                <UserCircleIcon className="w-7 h-7 text-white-100" />
+                                    <ChevronDownIcon className="w-5 h-5 ml-2 text-white" />
                                 </Menu.Button>
-                                <Menu.Items className="absolute right-0 w-48 mt-2 bg-white shadow-lg ring-1 ring-gray-300 divide-y divide-gray-100 rounded-md">
-                                    <Link className='p-4 flex items-center'>{user.name}</Link>
+                                <Menu.Items className="absolute right-0 w-48 mt-2 bg-white shadow-lg ring-1 ring-gray-300 divide-y divide-gray-100 rounded-xl">
+                                    <Link className='p-4 flex mx-6 text-gray-800 items-center'>{user.name}</Link>
                                     <Link to="/account" onClick={closeMobileMenu} className="flex items-center px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-gray-900">
                                         <UserCircleIcon className="w-5 h-5 mr-2 text-gray-600" />
                                         Account
@@ -213,10 +237,10 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
 
                             {/* Cart */}
                             <div className="relative">
-                                <Link to="/shoppingcart" onClick={closeMobileMenu} className="text-gray-800 hover:text-gray-600">
-                                    <ShoppingCartIcon className="w-6 h-6" />
+                                <Link to="/shoppingcart" onClick={closeMobileMenu} className="text-white-800 hover:text-gray-600">
+                                    <ShoppingCartIcon className="w-7 h-7" />
                                     {cartItemCount > 0 && (
-                                        <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-indigo-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+                                        <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white-100 bg-yellow-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
                                             {cartItemCount}
                                         </span>
                                     )}
@@ -225,8 +249,8 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
 
                             {/* Wishlist */}
                             <div className="relative">
-                                <Link to="/wishlist" onClick={closeMobileMenu} className="text-gray-800 hover:text-blue-600">
-                                    <HeartIcon className="w-6 h-6 text-orange-700" />
+                                <Link to="/wishlist" onClick={closeMobileMenu} className="text-white-800 hover:text-blue-600">
+                                    <HeartIcon className="w-7 h-7 text-orange-200" />
                                     {wishlistItemCount > 0 && (
                                         <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white-700 bg-yellow-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
                                             {wishlistItemCount}
@@ -256,7 +280,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                             Home
                         </Link>
                         <Link to="/products" onClick={closeMobileMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white">
-                            Products
+                            Shop
                         </Link>
                         <Link to="/categories" onClick={closeMobileMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white">
                             Categories
@@ -290,6 +314,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                 </div>
             )}
         </header>
+        </>
     );
 };
 

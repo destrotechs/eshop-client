@@ -70,19 +70,19 @@ const ProductCard = ({ product }) => {
 
     return (
         <>
-            <div className="bg-white shadow-lg rounded-lg pb-6 w-80 mb-6 transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+            <div className="bg-white shadow-sm rounded-lg pb-4  w-60 mb-3 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
                 <Link to={`/product/${product.id}`} className="block">
                     <img
                         src={imageUrl}
                         alt={product.name}
-                        className="w-full h-60 object-cover rounded-t-lg"
+                        className="w-full h-40 object-cover rounded-t-lg"
                     />
                 </Link>
                 <div className="mt-4 pl-3 pr-3">
-                    <h2 className="text-2xl font-bold">{toSentenceCase(product.name)}</h2>
+                    <h4 className="text-xl font-bold">{toSentenceCase(product.name)}</h4>
                     <p className="text-gray-700 mt-2">
-                        {truncateDescription(toSentenceCase(product.description), 100)}
-                        {product.description.length > 100 && (
+                        {truncateDescription(toSentenceCase(product.description), 40)}
+                        {product.description.length > 40 && (
                             <span
                                 className="text-blue-500 cursor-pointer ml-1"
                                 onClick={handleExpandDescription}
@@ -95,19 +95,19 @@ const ProductCard = ({ product }) => {
                 </div>
                 <div className="flex justify-between mt-4 pl-3 pr-3">
                     <button
-                        className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                        className="p-2 rounded-full text-blue-600 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                         onClick={() => handleAddToCart(product)}
                     >
                         <ShoppingCartIcon className="w-6 h-6" />
                     </button>
                     <button
-                        className="p-2 rounded-full bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+                        className="p-2 rounded-full text-orange-500 hover:bg-orange-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
                         onClick={() => handleAddToWishlist(product)}
                     >
                         <HeartIcon className="w-6 h-6" />
                     </button>
                     <button
-                        className="p-2 rounded-full bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                        className="p-2 rounded-full text-yellow-400 hover:bg-yellow-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                         onClick={() => handleViewReviews(product)}
                     >
                         <StarIcon className="w-6 h-6" />

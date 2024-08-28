@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const Breadcrumb = ({ paths }) => {
   return (
-    <nav className="bg-gray-100 p-4 rounded">
+    <nav className="bg-gray-100 p-4 rounded flex flex-col items-start w-md">
       <ol className="list-reset flex text-blue-600">
         {paths.map((path, index) => (
           <li key={index} className="flex items-center">
