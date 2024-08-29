@@ -20,6 +20,11 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.log("Error: " + JSON.stringify(error));
+    if (error.response && error.response.status === 401) {
+      // Redirect to login page
+      window.location.href = '/signin'; // or use history.push('/login') if you're using react-router
+    }
     return Promise.reject(error);
   }
 );

@@ -37,8 +37,8 @@ function App() {
       <WishlistProvider>
     <BrowserRouter>
       <Routes>
-        <Route path="/signin" element={<SignIn/>}></Route>
-        <Route path="/signup" element={<Signup/>}></Route>
+        <Route path="/signin" element={<MainLayout><SignIn/></MainLayout>}></Route>
+        <Route path="/signup" element={<MainLayout><Signup/></MainLayout>}></Route>
         <Route path="/" element={<MainLayout><Dashboad/></MainLayout>}> </Route>
           <Route path="/categories/:category_code" element={<MainLayout><ProductList/></MainLayout>}></Route>
           <Route path="/products/" element={<MainLayout><ProductList/></MainLayout>}></Route>

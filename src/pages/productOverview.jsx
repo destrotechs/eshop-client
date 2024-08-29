@@ -223,34 +223,49 @@ const handleAddToWishlist = async (product) => {
       
       {/* Image Viewer Modal */}
       {isViewerOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="relative">
-            <button
-              onClick={prevImage}
-              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 z-10"
-            >
-              &#8249;
-            </button>
-            <img
-              src={`${apiClient.defaults.baseURL}${product.images[selectedImageIndex].img_url.replace(/^\//, '')}`}
-              alt={`Selected Image ${selectedImageIndex + 1}`}
-              className="max-w-full max-h-full rounded-lg"
-            />
-            <button
-              onClick={nextImage}
-              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 z-10"
-            >
-              &#8250;
-            </button>
-            <button
-              onClick={closeViewer}
-              className="absolute top-2 right-2 bg-white text-black p-2 rounded-full hover:bg-gray-200"
-            >
-              &times;
-            </button>
-          </div>
-        </div>
-      )}
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+    onClick={closeViewer} // Close viewer on overlay click
+  >
+    <div
+      className="relative w-full h-full max-w-[90vw] max-h-[90vh] flex items-center justify-center"
+      onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the viewer
+    >
+      {/* Previous Image Button */}
+      <button
+        onClick={prevImage}
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 z-10"
+      >
+        &#8249;
+      </button>
+
+      {/* Image */}
+      <img
+        src={`${apiClient.defaults.baseURL}${product.images[selectedImageIndex].img_url.replace(/^\//, '')}`}
+        alt={`Selected Image ${selectedImageIndex + 1}`}
+        className="max-w-full max-h-full rounded-lg object-contain"
+      />
+
+      {/* Next Image Button */}
+      <button
+        onClick={nextImage}
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 z-10"
+      >
+        &#8250;
+      </button>
+
+      {/* Close Viewer Button */}
+      <button
+        onClick={closeViewer}
+        className="absolute top-2 right-2 bg-white text-black p-2 rounded-full hover:bg-gray-200"
+      >
+        &times;
+      </button>
+    </div>
+  </div>
+)}
+
+
       <Toast
                 message={toastMessage}
                 show={showToast}

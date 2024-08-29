@@ -261,10 +261,10 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                         </>
                     ) : (
                         <>
-                            <Link to="/signup" onClick={closeMobileMenu} className="text-gray-800 hover:text-gray-600 text-lg font-medium">
+                            <Link to="/signup" onClick={closeMobileMenu} className="text-white-800 hover:text-blue-600 text-lg font-medium">
                                 Sign Up
                             </Link>
-                            <Link to="/signin" onClick={closeMobileMenu} className="text-gray-800 hover:text-gray-600 text-lg font-medium">
+                            <Link to="/signin" onClick={closeMobileMenu} className="text-white-800 hover:text-blue-600 text-lg font-medium">
                                 Sign In
                             </Link>
                         </>
