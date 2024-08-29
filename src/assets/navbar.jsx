@@ -185,8 +185,8 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                         placeholder="Search..."
                         className="w-full px-4 py-2 border border-gray-300 text-gray-900 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-300"
                     /></div>
-                    <button type="submit" className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-2 text-gray-700 hover:bg-gray-400 hover:text-white rounded-full flex items-center">
-                        <MagnifyingGlassIcon className="w-5 h-5" />
+                    <button type="submit" className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-2 text-gray-700 hover:bg-blue-400 hover:text-white rounded-full flex items-center">
+                        <MagnifyingGlassIcon className="w-5 h-5" /> &nbsp;Search
                     </button>
                     {suggestions.length > 0 && (
                         <div className="absolute top-full mt-2 w-full bg-white shadow-lg ring-1 ring-gray-300 max-h-60 overflow-auto z-10 rounded-md">

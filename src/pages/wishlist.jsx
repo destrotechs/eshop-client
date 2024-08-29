@@ -7,12 +7,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import Breadcrumb from '../assets/breadCrump';
 import Toast from '../assets/Toast';
 import { eventEmitter } from '../assets/EventEmitter';
+import { useWishlist } from '../assets/WishlistContext'; // Import WishlistContext
+
 const Wishlist = () => {
   const [items, setItems] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [cart, setCart] = useState({ items: {}, subtotal: 0, total: 0, tax: 0, discount: 0 });
-
+  const { fetchWishlist } = useWishlist(); // Use WishlistContext
+  const [itemToRemove, setItemToRemove] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     fetchWishlistItems();
   }, []);
@@ -25,10 +29,22 @@ const Wishlist = () => {
       console.error("Error fetching wishlist data:", error);
     }
   };
-  const handleRemoveFromWishlist = async (item) => {
+  const handleRemoveFromWishlist = async () => {
     try {
-      const response = await apiClient.post(`/api/shopping/wishlist/remove`,{product_id: item.product.id}); // Update with your actual API endpoint
-      fetchWishlistItems();
+      const response = await apiClient.post(`/api/shopping/wishlist/remove`,{product_id: itemToRemove.product.id}); // Update with your actual API endpoint
+      console.log("response",response.data)
+      if (response.status === 200) {
+        await fetchWishlist();
+        const itemsArray = Object.values(response.data.data.items);
+        setItems(itemsArray || []);
+        setToastMessage(response.data.message);
+        setShowModal(false);
+        setShowToast(true);
+      }
+      if (response.status === 204) {
+        setToastMessage(response.data.message);
+        setShowToast(true);
+      }
     } catch (error) {
       console.error("Error removing item from wishlist:", error);
     }
@@ -45,10 +61,15 @@ const Wishlist = () => {
             // Emit cart update event
             eventEmitter.emit('cartUpdated', updatedCart);
       setToastMessage(response.data.message);
+      
       setShowToast(true);
     } catch (error) {
       console.error("Error adding item to cart:", error);
     }
+  };
+  const confirmRemoveItem = (item) => {
+    setItemToRemove(item);
+    setShowModal(true);
   };
 
   return (
@@ -83,13 +104,13 @@ const Wishlist = () => {
                   <div className="flex items-center space-x-4">
                     <button
                       onClick={() => handleAddToCart(item)}
-                      className="text-indigo p-2 rounded-lg hover:bg-green-600 hover:text-white transition"
+                      className="text-indigo p-2 rounded-lg hover:bg-blue-600 hover:text-white transition"
                     >
                       
                       <ShoppingCartIcon className="w-6 h-6" />
                     </button>
                     <button
-                      onClick={() => handleRemoveFromWishlist(item)}
+                      onClick={() => confirmRemoveItem(item)}
                       className="text-red-500 rounded-md p-2  hover:bg-red-700 hover:text-white transition"
                     >
                       <TrashIcon className="w-6 h-6" />
@@ -102,6 +123,29 @@ const Wishlist = () => {
         )}
       </div>
     </section>
+    {/* Confirmation Modal */}
+    {showModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm mx-auto">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Confirm Removal</h3>
+            <p className="text-gray-700">Are you sure you want to remove <strong>{toSentenceCase(itemToRemove.product.name)}</strong> from your wishlist?</p>
+            <div className="mt-6 flex justify-end space-x-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleRemoveFromWishlist}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     <Toast
     message={toastMessage}
     show={showToast}

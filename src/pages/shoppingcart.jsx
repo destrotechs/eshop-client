@@ -5,6 +5,8 @@ import apiClient from "../auth/apiClient";
 import { toSentenceCase } from '../assets/textUtil';
 import { useNavigate, Link } from 'react-router-dom';
 import Breadcrumb from '../assets/breadCrump';
+import { eventEmitter } from '../assets/EventEmitter';
+import Toast from '../assets/Toast';
 const ShoppingCart = () => {
   const [items, setItems] = useState([]);
   const [couponCode, setCouponCode] = useState("");
@@ -12,6 +14,9 @@ const ShoppingCart = () => {
   const [taxRate] = useState(0.07); // 7% tax rate
   const [showModal, setShowModal] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
+  const [toastMessage, setToastMessage] = useState('');
+  const [showToast, setShowToast] = useState(false);
+  const [cart, setCart] = useState({ items: {}, subtotal: 0, total: 0, tax: 0, discount: 0 });
   const breadcrumbPaths = [
     { label: 'Home', href: '/' },
     { label: 'Shop', href: '/shop' },
@@ -33,22 +38,47 @@ const ShoppingCart = () => {
   }, []);
 
   // Handle quantity changes
-  const handleQuantityChange = (itemId, change) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === itemId
-          ? { ...item, quantity: Math.max(1, item.quantity + change) }
-          : item
-      )
-    );
+  const handleQuantityChange = async(itemId, change) => {
+    console.log("Change quantity", itemId, change);
+    const response = await apiClient.put("/api/shopping/quantity", {'product_id': itemId, 'quantity': change});
+    if (response.status === 200) {  
+      const updatedCart = response.data.data;
+      setCart(updatedCart);
+
+      // Emit cart update event
+      eventEmitter.emit('cartUpdated', updatedCart);
+            setToastMessage(response.data.message);
+            setShowToast(true);
+        setItems((prevItems) => {
+          return prevItems.map((item) => {
+            if (item.product.id === itemId) {
+              const updatedQuantity = Math.max(1, item.quantity + change);
+              return { ...item, quantity: updatedQuantity, total: updatedQuantity * item.product.price };
+            }
+            return item;
+          });
+        });
+    }
   };
+  
 
   // Handle remove item with confirmation
-  const handleRemoveItem = () => {
-    setItems(items.filter((item) => item.id !== itemToRemove.id));
-    setShowModal(false);
-    setItemToRemove(null);
+  const handleRemoveItem = async() => {
+    const response = await apiClient.post("/api/shopping/cart/remove", {'product_id': itemToRemove.product.id});
+    if (response.status === 200) {  
+      const updatedCart = response.data.data;
+      setCart(updatedCart);
+
+      // Emit cart update event
+      eventEmitter.emit('cartUpdated', updatedCart);
+            setToastMessage(response.data.message);
+            setShowToast(true);
+      setItems((prevItems) => prevItems.filter((item) => item.product.id !== itemToRemove.product.id));
+      setShowModal(false);
+      setItemToRemove(null);
+    }
   };
+  
 
   // Show modal for confirmation
   const confirmRemoveItem = (item) => {
@@ -66,7 +96,7 @@ const ShoppingCart = () => {
   };
 
   // Calculate totals
-  const subtotal = items.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+  const subtotal = items?.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
   const tax = subtotal * taxRate;
   const discountAmount = subtotal * discount;
   const totalPrice = subtotal + tax - discountAmount;
@@ -77,7 +107,7 @@ const ShoppingCart = () => {
     <section className="max-w-6xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
       <div className="bg-white rounded-lg shadow-lg p-6">
         
-        {items.length === 0 ? (
+        {items?.length === 0 ? (
           <div className="text-center text-gray-500">
             <center><img src={'/images/cart.png'} alt='cart' className='w-80 h-80 m-4'/></center>
             <p>Your cart is empty. Start <Link to="/shop" className="text-blue-600">shopping </Link> to fill it up!</p>
@@ -86,9 +116,9 @@ const ShoppingCart = () => {
           <div>
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Shopping Cart</h2>
             <ul className="space-y-4">
-              {items.map((item) => (
+              {items?.map((item) => (
                 
-                <li key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm">
+                <li key={item.product.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm">
                   <div className="flex items-center space-x-4">
                     <Link to={`/product/`+item.product.id}><img
                       src={item.product.images && item.product.images[0] ?  `${apiClient.defaults.baseURL}${item.product.images[0] .img_url.replace(/^\//, '')}`
@@ -105,7 +135,7 @@ const ShoppingCart = () => {
                     {/* Quantity buttons */}
                     <div className="flex items-center space-x-3">
                       <button
-                        onClick={() => handleQuantityChange(item.id, -1)}
+                        onClick={() => handleQuantityChange(item.product.id, -1)}
                         disabled={item.quantity <= 1}
                         className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-400"
                       >
@@ -113,7 +143,7 @@ const ShoppingCart = () => {
                       </button>
                       <span className="font-semibold text-lg">{item.quantity}</span>
                       <button
-                        onClick={() => handleQuantityChange(item.id, 1)}
+                        onClick={() => handleQuantityChange(item.product.id, 1)}
                         className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-400"
                       >
                         <PlusIcon className="w-5 h-5 text-gray-700" />
@@ -209,6 +239,11 @@ const ShoppingCart = () => {
         </div>
       )}
     </section>
+    <Toast
+                message={toastMessage}
+                show={showToast}
+                onClose={() => setShowToast(false)}
+            />
     </>
   );
 };

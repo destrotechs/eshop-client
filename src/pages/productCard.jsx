@@ -51,10 +51,11 @@ const ProductCard = ({ product }) => {
             await fetchWishlist();
             setToastMessage(response.data.message);
             setShowToast(true);
-        } else {
-            setToastMessage('Failed to add item to wishlist.');
+        } 
+        if (response.status === 204) {
+            setToastMessage(response.data.message);
             setShowToast(true);
-        }
+            }
     };
 
     const handleExpandDescription = () => {
