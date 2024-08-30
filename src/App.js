@@ -11,12 +11,14 @@ import SignIn from './auth/signin';
 import Dashboad from './pages/dashboard';
 import ProductList from './pages/productlist';
 import Profile from './pages/myaccount';
-import ShoppingCart from './pages/shoppingcart';
+import Cart from './pages/shoppingcart';
 import ProductOverview from './pages/productOverview';
 import Signup from './auth/signup';
 import { CartProvider } from './assets/CartContext';
 import { WishlistProvider } from './assets/WishlistContext';
 import Wishlist from './pages/wishlist';
+import Orders from './pages/customerOrders';
+import Checkout from './pages/checkout';
 function App() {
   const dispatch = useDispatch();
 
@@ -45,9 +47,11 @@ function App() {
           <Route path="/shop/" element={<MainLayout><ProductList/></MainLayout>}></Route>
           <Route path="/products/:common_name" element={<MainLayout><ProductList/></MainLayout>}></Route>
           <Route path='/account' element={<MainLayout><Profile/></MainLayout>}></Route>
-          <Route path='/shoppingcart' element={<MainLayout><ShoppingCart/></MainLayout>}></Route>
+          <Route path='/shoppingcart' element={<MainLayout><Cart/></MainLayout>}></Route>
           <Route path='/product/:productId' element={<MainLayout><ProductOverview/></MainLayout>}></Route>
           <Route path='/wishlist' element={<MainLayout><Wishlist/></MainLayout>}></Route>
+          <Route path='/orders' element={<MainLayout><Orders/></MainLayout>}></Route>
+          <Route path='/checkout' element={<MainLayout><Checkout/></MainLayout>}></Route>
       </Routes>
     </BrowserRouter>
     </WishlistProvider>

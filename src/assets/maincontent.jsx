@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 const MainContent = ({children})=>{
     const authState = useSelector((state) => state.auth);
 return(
-    <div>
+    <div className='ml-4 mr-4'>
         {children}
     </div>
 
