@@ -169,7 +169,7 @@ const navigate = new useNavigate();
             </ul>
 
             {/* Coupon & Total Section */}
-            {showSubtotalSection && (<div className="mt-6 bg-gray-100 p-4 rounded-lg">
+            {showSubtotalSection && (<div className="mt-6 bg-white-100 p-4 rounded-lg">
               <div className="flex items-center space-x-4 mb-4">
                 <input
                   type="text"
