@@ -2,21 +2,29 @@ import React, { useState, useEffect} from "react";
 import { TrashIcon, PlusIcon, MinusIcon, HeartIcon } from "@heroicons/react/24/outline";
 import FormattedPrice from "../assets/formatedprice";
 import apiClient from "../auth/apiClient";
-import CheckoutPage from "../assets/checkoutCard";
-
+import CheckoutCard from "../assets/checkoutCard";
+import { useNavigate, Link } from 'react-router-dom';
+import { useCart } from '../assets/CartContext';
 const Checkout = () =>{
     const [personalInfo, setPersonalInfo] = useState({});
+    
+    const { cart } = useCart();
   const [addresses, setAddresses] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [orders, setOrders] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = new useNavigate();
   const [error, setError] = useState(null);
     useEffect(() => {
     
         fetchUserData();
         fetchPaymentMethods();
+        
       }, []);
+      if(cart.items.length < 1){
+        navigate('/shop')
+    }
     const fetchUserData = async () => {
         try {
           const userString = localStorage.getItem("user");
@@ -57,7 +65,7 @@ const Checkout = () =>{
       };
     return (
         <div>
-            <CheckoutPage addresses={addresses} paymentMethods={paymentMethods}/>
+            <CheckoutCard addresses={addresses} paymentMethods={paymentMethods}/>
         </div>
     );
 }

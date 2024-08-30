@@ -4,7 +4,7 @@ import ShoppingCart from '../components/cartComponent';
 import FormattedPrice from "../assets/formatedprice";
 import { Transition, Disclosure } from '@headlessui/react';
 
-const CheckoutPage = ({ addresses = [], paymentMethods = [] }) => {
+const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
   const { cart } = useCart();
   const [selectedAddress, setSelectedAddress] = useState('');
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -132,7 +132,7 @@ const CheckoutPage = ({ addresses = [], paymentMethods = [] }) => {
 
       {/* Right Column */}
       <div className="w-full lg:w-5/12 bg-white rounded-lg shadow-md p-6 space-y-4">
-        <h2 className="text-2xl font-semibold mb-4 flex items-center">
+        <h2 className="text-1xl font-semibold mb-4 flex items-center">
           <svg className="mr-2 w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
           </svg>
@@ -168,4 +168,4 @@ const CheckoutPage = ({ addresses = [], paymentMethods = [] }) => {
   );
 };
 
-export default CheckoutPage;
+export default CheckoutCard;

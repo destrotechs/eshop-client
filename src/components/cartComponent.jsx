@@ -113,7 +113,7 @@ const navigate = new useNavigate();
           </div>
         ) : (
           <div>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">{title}</h2>
+            <h2 className="text-1xl font-semibold text-gray-900 mb-6">{title}</h2>
             <ul className="space-y-4">
               {items?.map((item) => (
                 

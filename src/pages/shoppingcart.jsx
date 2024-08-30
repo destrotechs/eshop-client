@@ -8,6 +8,7 @@ import Breadcrumb from '../assets/breadCrump';
 import { eventEmitter } from '../assets/EventEmitter';
 import Toast from '../assets/Toast';
 import ShoppingCart from "../components/cartComponent";
+import { useCart } from '../assets/CartContext';
 const Cart = () => {
   const breadcrumbPaths = [
     { label: 'Home', href: '/' },
@@ -18,16 +19,17 @@ const Cart = () => {
   const handleCheckoutNav = () => {
     navigate('/checkout');
   };
-
+  const { cart } = useCart();
+  console.log("CART",cart['items']);
   return (
     <section className="max-w-6xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
     <Breadcrumb paths={breadcrumbPaths} />
     <ShoppingCart title="Shopping Cart"/>
-    <div className="mt-6 flex justify-end">
+    {Object.keys(cart['items']).length > 0 && (<div className="mt-6 flex justify-end">
       <button onClick={handleCheckoutNav} className="bg-indigo-600 text-white text-lg font-bold py-4 px-8 rounded-md shadow-md hover:bg-indigo-700 transition">
         Proceed to Checkout
       </button>
-    </div>
+    </div>)}
     </section>
   
   );
