@@ -127,8 +127,8 @@ const handleAddToWishlist = async (product) => {
 
   return (
     <>
+      <section className="max-w-7xl mx-auto">
       <Breadcrumb paths={breadcrumbPaths} />
-      <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Product Image Slider */}
@@ -206,9 +206,9 @@ const handleAddToWishlist = async (product) => {
         </div>
       </section>
       {similar_products?.length > 0 && (
-        <section className="py-12 bg-gray-100">
+        <section className="py-12 bg-gray-100 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h4 className="font-medium text-white bg-[#0369a1] rounded-t-lg p-4 text-center text-lg">
+            <h4 className="font-medium text-white bg-yellow-400 rounded p-4 text-center text-lg">
               Similar Products
             </h4>
             <div className="flex flex-wrap gap-8 mt-6">
@@ -267,10 +267,10 @@ const handleAddToWishlist = async (product) => {
 
 
       <Toast
-                message={toastMessage}
-                show={showToast}
-                onClose={() => setShowToast(false)}
-            />
+          message={toastMessage}
+          show={showToast}
+          onClose={() => setShowToast(false)}
+      />
     </>
   );
 };

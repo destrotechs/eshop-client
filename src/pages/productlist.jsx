@@ -60,8 +60,8 @@ console.log("search",common_name);
         return (
           <>
           
+            <div className="max-w-7xl mx-auto">
           <Breadcrumb paths={breadcrumbPaths} />
-            <div className="flex flex-col items-center w-full">
               {productChunks.length > 0 ? (
                 productChunks.map((chunk, rowIndex) => (
                   <div key={rowIndex} className="flex flex-wrap justify-center gap-4 mb-8">

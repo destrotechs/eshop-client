@@ -24,7 +24,7 @@ const Dashboard = () => {
   return (
     <div className="bg-gray-100">
       {/* Hero Section */}
-      <header className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-center py-24">
+      <header className="bg-blue-500 text-white text-center py-24">
         <div className="container mx-auto px-4">
           <h1 className="text-5xl font-extrabold mb-4">Welcome to ShopMATT</h1>
           <p className="text-xl mb-8">Discover amazing products at unbeatable prices!</p>

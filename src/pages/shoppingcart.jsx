@@ -20,7 +20,6 @@ const Cart = () => {
     navigate('/checkout');
   };
   const { cart } = useCart();
-  console.log("CART",cart['items']);
   return (
     <section className="max-w-6xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
     <Breadcrumb paths={breadcrumbPaths} />
