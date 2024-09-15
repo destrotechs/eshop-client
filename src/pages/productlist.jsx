@@ -60,7 +60,7 @@ console.log("search",common_name);
         return (
           <>
           
-            <div className="max-w-7xl mx-auto">
+            {products && <div className="max-w-7xl mx-auto">
           <Breadcrumb paths={breadcrumbPaths} />
               {productChunks.length > 0 ? (
                 productChunks.map((chunk, rowIndex) => (
@@ -80,7 +80,7 @@ console.log("search",common_name);
                     <p>No products found.</p>
                 </div>
               )}
-            </div>
+            </div>}
             </>
           );
           

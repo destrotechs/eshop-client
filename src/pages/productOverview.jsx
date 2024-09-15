@@ -4,6 +4,10 @@ import { useParams } from 'react-router-dom';
 import apiClient from '../auth/apiClient';
 import FormattedPrice from '../assets/formatedprice';
 import { toSentenceCase } from '../assets/textUtil';
+import {
+  ChevronDownIcon, ShoppingCartIcon, ListBulletIcon, HeartIcon,
+  MagnifyingGlassIcon, UserCircleIcon, PowerIcon, XMarkIcon, Bars3Icon
+} from '@heroicons/react/24/outline';
 import Breadcrumb from '../assets/breadCrump';
 import Toast from '../assets/Toast';
 import ProductCard from './productCard';
@@ -124,6 +128,11 @@ const handleAddToWishlist = async (product) => {
     { label: 'Products', href: '/products' },
     { label: 'View Product' },
   ];
+  const colorsString = "black,red,green,blue,orange,yellow,purple";
+
+  // Convert the string into an array of colors
+  const colorsArray = colorsString.split(',');
+
 
   return (
     <>
@@ -173,7 +182,16 @@ const handleAddToWishlist = async (product) => {
                   <span className="text-sm line-through text-gray-400 ml-3">${product.originalPrice}</span>
                 )}
               </div>
-
+              <h4 className="text-1xl font-bold text-gray-900">Options</h4><br/>
+              <div className="flex flex-wrap gap-1">
+                {colorsArray.map((color, index) => (
+                  <button
+                    key={index}
+                    className={`bg-${color}-500 text-white font-bold py-4 px-4 rounded-full hover:bg-${color}-700 transition-all`}
+                  >
+                  </button>
+                ))}
+              </div>
               {/* Ratings */}
               <div className="flex items-center mt-4">
                 <div className="flex items-center">
@@ -194,11 +212,11 @@ const handleAddToWishlist = async (product) => {
 
               {/* Add to Cart */}
               <div className="mt-6 flex items-center space-x-3">
-                <button onClick={() => handleAddToCart(product)} className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">
-                  Add to Cart
+                <button onClick={() => handleAddToCart(product)} className="bg-indigo-600 inline-block text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">
+                <ShoppingCartIcon className="w-5 h-5 inline-block" /> &nbsp;Add to Cart
                 </button>
-                <button onClick={()=>handleAddToWishlist(product)} className="bg-gray-100 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-200">
-                  Add to Wishlist
+                <button onClick={()=>handleAddToWishlist(product)} className="bg-gray-100 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-orange-400 hover:text-white">
+                <HeartIcon className="w-5 h-5 text-orange-500 inline-block hover:text-white" />&nbsp;Add to Wishlist
                 </button>
               </div>
             </div>
