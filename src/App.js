@@ -19,6 +19,7 @@ import { WishlistProvider } from './assets/WishlistContext';
 import Wishlist from './pages/wishlist';
 import Orders from './pages/customerOrders';
 import Checkout from './pages/checkout';
+import Payment from './pages/payment';
 function App() {
   const dispatch = useDispatch();
 
@@ -52,6 +53,7 @@ function App() {
           <Route path='/wishlist' element={<MainLayout><Wishlist/></MainLayout>}></Route>
           <Route path='/orders' element={<MainLayout><Orders/></MainLayout>}></Route>
           <Route path='/checkout' element={<MainLayout><Checkout/></MainLayout>}></Route>
+          <Route path='/order/payment' element={<MainLayout><Payment/></MainLayout>}></Route>
       </Routes>
     </BrowserRouter>
     </WishlistProvider>

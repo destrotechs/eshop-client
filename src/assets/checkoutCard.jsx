@@ -3,10 +3,11 @@ import { useCart } from './CartContext';
 import ShoppingCart from '../components/cartComponent';
 import FormattedPrice from "../assets/formatedprice";
 import apiClient from '../auth/apiClient';
+import { useNavigate } from 'react-router-dom';
 
 const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
   const { cart } = useCart();
-  
+  const navigate = useNavigate();
   const [addressList, setAddressList] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('');
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -59,8 +60,16 @@ const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
       };
       const response = await apiClient.post(`/api/orders/add`, orderData);
       if (response.status === 200) {
+        console.log("Order added successfully",response);
+        const order = response.data.data;
         // Clear the cart and reset the selected address and payment method
-        cart.clearCart();
+        // cart.clearCart();
+        navigate('/order/payment/', {
+          state: {
+            order,
+            selectedPaymentMode: selectedPaymentMethod,
+          },
+        })
         setSelectedAddress('');
         setSelectedPaymentMethod('');
       }

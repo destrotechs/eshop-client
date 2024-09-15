@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-
+import FormattedPrice from '../assets/formatedprice';
 const OrderList = ({ orders }) => {
   const [expandedOrderId, setExpandedOrderId] = useState(null);
   const ordersRef = useRef(null);
@@ -20,9 +20,12 @@ const OrderList = ({ orders }) => {
               onClick={() => handleToggleExpand(order.id)}
             >
               <div className="flex justify-between items-center">
-                <p className="text-gray-900 font-medium">
-                  {`Order #${order.id} - Total: $${order.total} - Status: ${order.status}`}
+              <p className="text-gray-900 font-medium">
+                  {`Order #${order.order_number} - Total: `}
+                  <FormattedPrice price={order.total_cost} />
+                  {` - Status: ${order.status}`}
                 </p>
+
                 <button
                   className={`absolute top-2 right-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-opacity duration-300 ${
                     expandedOrderId === order.id ? 'opacity-100' : 'opacity-0'
