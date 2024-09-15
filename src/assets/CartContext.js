@@ -22,6 +22,16 @@ export const CartProvider = ({ children }) => {
             console.error('Error fetching cart:', error);
         }
     };
+    const clearCart = () => {
+        setCart({
+          items: [],
+          subtotal: 0,
+          discount: 0,
+          tax: 0,
+          shippingCost: 0,
+          total: 0,
+        });
+      };
 
     useEffect(() => {
         fetchCart();
