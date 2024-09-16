@@ -15,18 +15,27 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
       return {};
     }
   };
+  const shortenString = (str) => {
+    if (str.length > 10) {
+      return str.substring(0, 10) + '...';
+    }
+    return str;
+  };
 
   return (
     <li
       key={order.id}
-      className="relative p-6 border rounded-lg shadow-sm hover:bg-gray-100 group"
+      className="relative p-6 border rounded-lg shadow-sm hover:bg-gray-100 group list-none"
       onClick={() => handleToggleExpand(order.id)}
     >
-      <div className="flex justify-between items-center">
-        <p className="text-gray-900 font-semibold">
-          {`Order #${order.order_number} - Status: ${order.status}`}
+      <div className="grid grid-cols-3 divide-x">
+      <p className="text-gray-900 font-semibold p-2">
+                {`Order #${expandedOrderId === order.id ? order.order_number : shortenString(order.order_number)}`}
+              </p>
+        <p className="text-gray-900 font-semibold p-2">
+         Status: {order.status}
         </p>
-        <p className="text-gray-600">
+        <p className="text-gray-600 p-2">
           {order.shipping_address?.shipping_address}
         </p>
       </div>

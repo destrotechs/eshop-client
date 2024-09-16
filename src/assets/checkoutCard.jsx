@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
   const { cart } = useCart();
+  const { clearCart } = useCart();
   const navigate = useNavigate();
   const [addressList, setAddressList] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('');
@@ -63,11 +64,13 @@ const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
         console.log("Order added successfully",response);
         const order = response.data.data;
         // Clear the cart and reset the selected address and payment method
-        // cart.clearCart();
+        clearCart();
         navigate('/order/payment/', {
           state: {
             order,
             selectedPaymentMode: selectedPaymentMethod,
+            message: 'Order added successfully',
+            showtoast:true,
           },
         })
         setSelectedAddress('');

@@ -4,13 +4,14 @@ import FormattedPrice from '../assets/formatedprice';
 import apiClient from '../auth/apiClient';
 import { toSentenceCase } from '../assets/textUtil';
 import Order from '../components/Order';
-
+import Toast from '../assets/Toast';
 const Payment = () => {
   const location = useLocation();
-  const { order, selectedPaymentMode } = location.state; // Extract the order and payment mode
+  const { order, selectedPaymentMode,message,showtoast } = location.state; // Extract the order and payment mode
   const [details, setDetails] = useState([]);
   const [paymentDetails, setPaymentDetails] = useState({}); // State to hold payment details inputs
   const [expandedOrderId, setExpandedOrderId] = useState(null);
+  const [showToast, setShowToast] = useState(showtoast);
   useEffect(() => {
     fetchPaymentModeDetails();
   }, [selectedPaymentMode]);
@@ -46,8 +47,10 @@ const Payment = () => {
     
     return letterWord;
   }
+  
 
   return (
+    <>
     <div className="max-w-4xl mx-auto p-2">
       {/* Payment Card */}
       <div className="bg-white shadow-md overflow-hidden p-4">
@@ -102,6 +105,12 @@ const Payment = () => {
         </div>
       </div>
     </div>
+    <Toast
+    message={message}
+    show={showToast}
+    onClose={() => setShowToast(false)}
+  />
+  </>
   );
 };
 

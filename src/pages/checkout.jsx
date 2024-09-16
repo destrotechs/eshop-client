@@ -9,6 +9,7 @@ const Checkout = () =>{
     const [personalInfo, setPersonalInfo] = useState({});
     
     const { cart } = useCart();
+   
   const [addresses, setAddresses] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [orders, setOrders] = useState([]);
