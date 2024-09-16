@@ -206,7 +206,7 @@ const ProductOverview = () => {
                     </svg>
                   ))}
                 </div>
-                <span className="ml-2 text-gray-500 hover:text-white hover:p-1 hover:bg-yellow-700 hover:rounded" onClick={handleOpenReviewsModal} >{product.ratings.length ?? 0} Reviews</span>
+                <span className="ml-2 text-gray-500 hover:text-white hover:p-1 hover:bg-yellow-700 hover:rounded" onClick={handleOpenReviewsModal} >{product.ratings.length ?? 0} Review(s)</span>
               </div>
 
               {/* Add to Cart */}
@@ -308,7 +308,7 @@ const ProductOverview = () => {
                           <path d="M12 18l-6.473 3.6 1.236-7.2L1 8.4l7.264-1.05L12 1l3.736 6.35L23 8.4l-5.763 6 1.236 7.2z" />
                         </svg>
                       ))}
-                      <span className="ml-2 text-gray-600 text-sm">{review.created_at.slice(0, 10)}</span>
+                      <span className="ml-2 text-gray-600 text-sm">{review.created_at.slice(0, 10)}&nbsp; ({review.user.name})</span>
                     </div>
                     <p className="text-gray-800">{review.review}</p>
                   </li>
