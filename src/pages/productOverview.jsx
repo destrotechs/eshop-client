@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Slider from "react-slick";
+import Slider from 'react-slick';
 import { useParams } from 'react-router-dom';
 import apiClient from '../auth/apiClient';
 import FormattedPrice from '../assets/formatedprice';
@@ -24,8 +24,10 @@ const ProductOverview = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [cart, setCart] = useState({ items: {}, subtotal: 0, total: 0, tax: 0, discount: 0 });
+  const [reviewsModalOpen, setReviewsModalOpen] = useState(false); // State for reviews modal
+  const [reviews, setReviews] = useState([]);
 
-    const { fetchWishlist } = useWishlist(); // Use WishlistContext
+  const { fetchWishlist } = useWishlist(); // Use WishlistContext
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -34,6 +36,7 @@ const ProductOverview = () => {
         if (response.status === 200) {
           setProduct(response.data.data.product);
           setSimilarProduct(response.data.data.similar_products);
+          setReviews(response.data.data.product.ratings || []); // Set reviews
           setLoading(false);
         }
       } catch (error) {
@@ -65,54 +68,37 @@ const ProductOverview = () => {
     );
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!product) {
-    return <div>Product not found</div>;
-  }
-
-  const handleAddToCart = async(product) => {
-    // Implement add to cart functionality
-    // await apiClient.get('/sanctum/csrf-cookie');
-    const response = await apiClient.post('/api/shopping/cart/',{'product_id':product.id});
-    if (response.status===200){
+  const handleAddToCart = async (product) => {
+    const response = await apiClient.post('/api/shopping/cart/', { 'product_id': product.id });
+    if (response.status === 200) {
       const updatedCart = response.data.data;
       setCart(updatedCart);
-
-      // Emit cart update event
       eventEmitter.emit('cartUpdated', updatedCart);
-            setToastMessage(response.data.message);
-            setShowToast(true);
-            console.log("Add to cart ",response.data);
-            console.log('Added to cart:', product);
-    }else{
-        setToastMessage('Failed to add item to cart.');
-            setShowToast(true);
+      setToastMessage(response.data.message);
+      setShowToast(true);
+    } else {
+      setToastMessage('Failed to add item to cart.');
+      setShowToast(true);
     }
-    
-};
-const handleAddToWishlist = async (product) => {
-  // await apiClient.get('/sanctum/csrf-cookie');
-  const response = await apiClient.post('/api/shopping/wishlist/', { 'product_id': product.id });
-  if (response.status === 200) {
-      // eventEmitter.emit('wishlistUpdated', updatedCart);
-      // Fetch updated wishlist
+  };
+
+  const handleAddToWishlist = async (product) => {
+    const response = await apiClient.post('/api/shopping/wishlist/', { 'product_id': product.id });
+    if (response.status === 200) {
       await fetchWishlist();
       setToastMessage(response.data.message);
       setShowToast(true);
-  } else {
+    } else {
       setToastMessage('Failed to add item to wishlist.');
       setShowToast(true);
-  }
-};
+    }
+  };
 
   const sliderSettings = {
     dots: true,
-    infinite: product.images && product.images.length > 1,
+    infinite: product?.images && product.images.length > 1,
     speed: 500,
-    fade:true,
+    fade: true,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
@@ -128,16 +114,30 @@ const handleAddToWishlist = async (product) => {
     { label: 'Products', href: '/products' },
     { label: 'View Product' },
   ];
-  const colorsString = "black,red,green,blue,orange,yellow,purple";
 
-  // Convert the string into an array of colors
+  const colorsString = "black,red,green,blue,orange,yellow,purple";
   const colorsArray = colorsString.split(',');
 
+  const handleOpenReviewsModal = () => {
+    setReviewsModalOpen(true);
+  };
+
+  const handleCloseReviewsModal = () => {
+    setReviewsModalOpen(false);
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
 
   return (
     <>
       <section className="max-w-7xl mx-auto pb-6">
-      <Breadcrumb paths={breadcrumbPaths} />
+        <Breadcrumb paths={breadcrumbPaths} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Product Image Slider */}
@@ -188,8 +188,7 @@ const handleAddToWishlist = async (product) => {
                   <button
                     key={index}
                     className={`bg-${color}-500 text-white font-bold py-4 px-4 rounded-full hover:bg-${color}-700 transition-all`}
-                  >
-                  </button>
+                  />
                 ))}
               </div>
               {/* Ratings */}
@@ -207,16 +206,16 @@ const handleAddToWishlist = async (product) => {
                     </svg>
                   ))}
                 </div>
-                <span className="ml-2 text-gray-500">{product.reviewsCount ?? 0} Reviews</span>
+                <span className="ml-2 text-gray-500 hover:text-white hover:p-1 hover:bg-yellow-700 hover:rounded" onClick={handleOpenReviewsModal} >{product.ratings.length ?? 0} Reviews</span>
               </div>
 
               {/* Add to Cart */}
               <div className="mt-6 flex items-center space-x-3">
                 <button onClick={() => handleAddToCart(product)} className="bg-indigo-600 inline-block text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">
-                <ShoppingCartIcon className="w-5 h-5 inline-block" /> &nbsp;Add to Cart
+                  <ShoppingCartIcon className="w-5 h-5 inline-block" /> &nbsp;Add to Cart
                 </button>
-                <button onClick={()=>handleAddToWishlist(product)} className="bg-gray-100 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-orange-400 hover:text-white">
-                <HeartIcon className="w-5 h-5 text-orange-500 inline-block hover:text-white" />&nbsp;Add to Wishlist
+                <button onClick={() => handleAddToWishlist(product)} className="bg-gray-100 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-orange-400 hover:text-white">
+                  <HeartIcon className="w-5 h-5 text-orange-500 inline-block hover:text-white" />&nbsp;Add to Wishlist
                 </button>
               </div>
             </div>
@@ -238,56 +237,100 @@ const handleAddToWishlist = async (product) => {
         </section>
       )}
 
-      
       {/* Image Viewer Modal */}
       {isViewerOpen && (
-  <div
-    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-    onClick={closeViewer} // Close viewer on overlay click
-  >
-    <div
-      className="relative w-full h-full max-w-[90vw] max-h-[90vh] flex items-center justify-center"
-      onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the viewer
-    >
-      {/* Previous Image Button */}
-      <button
-        onClick={prevImage}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 z-10"
-      >
-        &#8249;
-      </button>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+          onClick={closeViewer} // Close viewer on overlay click
+        >
+          <div
+            className="relative w-full h-full max-w-[90vw] max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the viewer
+          >
+            {/* Previous Image Button */}
+            <button
+              onClick={prevImage}
+              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 z-10"
+            >
+              &#8249;
+            </button>
 
-      {/* Image */}
-      <img
-        src={`${apiClient.defaults.baseURL}${product.images[selectedImageIndex].img_url.replace(/^\//, '')}`}
-        alt={`Selected Image ${selectedImageIndex + 1}`}
-        className="max-w-full max-h-full rounded-lg object-contain"
-      />
+            {/* Image */}
+            <img
+              src={`${apiClient.defaults.baseURL}${product.images[selectedImageIndex].img_url.replace(/^\//, '')}`}
+              alt={`Selected Image ${selectedImageIndex + 1}`}
+              className="max-w-full max-h-full rounded-lg object-contain"
+            />
 
-      {/* Next Image Button */}
-      <button
-        onClick={nextImage}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 z-10"
-      >
-        &#8250;
-      </button>
+            {/* Next Image Button */}
+            <button
+              onClick={nextImage}
+              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 z-10"
+            >
+              &#8250;
+            </button>
 
-      {/* Close Viewer Button */}
-      <button
-        onClick={closeViewer}
-        className="absolute top-2 right-2 bg-white text-black p-2 rounded-full hover:bg-gray-200"
-      >
-        &times;
-      </button>
-    </div>
-  </div>
-)}
+            {/* Close Viewer Button */}
+            <button
+              onClick={closeViewer}
+              className="absolute top-2 right-2 bg-white text-black p-2 rounded-full hover:bg-gray-200"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
 
+      {/* Reviews Modal */}
+      {reviewsModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+          onClick={handleCloseReviewsModal} // Close modal on overlay click
+        >
+          <div
+            className="relative w-full max-w-2xl max-h-[80vh] overflow-y-auto bg-white p-6 rounded-lg shadow-lg"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+          >
+            <h3 className="text-2xl font-semibold mb-4">Product Reviews</h3>
+            {reviews.length > 0 ? (
+              <ul>
+                {reviews.map((review) => (
+                  <li key={review.id} className="border-b border-gray-300 py-4">
+                    <div className="flex items-center mb-2">
+                      {[...Array(Number(review.star_rate))].map((_, idx) => (
+                        <svg
+                          key={idx}
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                          className="w-5 h-5 text-yellow-400"
+                        >
+                          <path d="M12 18l-6.473 3.6 1.236-7.2L1 8.4l7.264-1.05L12 1l3.736 6.35L23 8.4l-5.763 6 1.236 7.2z" />
+                        </svg>
+                      ))}
+                      <span className="ml-2 text-gray-600 text-sm">{review.created_at.slice(0, 10)}</span>
+                    </div>
+                    <p className="text-gray-800">{review.review}</p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No reviews available.</p>
+            )}
+            <button
+              onClick={handleCloseReviewsModal}
+              className="absolute top-2 right-2 bg-gray-200 text-gray-600 p-2 rounded-full hover:bg-gray-300"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
 
       <Toast
-          message={toastMessage}
-          show={showToast}
-          onClose={() => setShowToast(false)}
+        message={toastMessage}
+        show={showToast}
+        onClose={() => setShowToast(false)}
       />
     </>
   );
