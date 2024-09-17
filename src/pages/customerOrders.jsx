@@ -26,9 +26,9 @@ const Orders = ()=>{
         }
       };
     return(
-        <section className="max-w-7xl bg-white mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <OrderList orders={orders}/>
-        </section>
+      <>
+        <OrderList orders={orders} showBreadcrumb={false}/>
+      </>
     )
 }
 export default Orders;

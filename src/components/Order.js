@@ -25,15 +25,16 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
   return (
     <li
       key={order.id}
-      className="relative p-6 border rounded-lg shadow-sm hover:bg-gray-100 group list-none"
+      className="relative p-1 border rounded-md shadow-sm hover:bg-gray-300 group list-none"
       onClick={() => handleToggleExpand(order.id)}
     >
       <div className="grid grid-cols-3 divide-x">
       <p className="text-gray-900 font-semibold p-2">
                 {`Order #${expandedOrderId === order.id ? order.order_number : shortenString(order.order_number)}`}
               </p>
-        <p className="text-gray-900 font-semibold p-2">
-         Status: {order.status}
+        <p className="text-gray-900 font-semibold p-2 flex justify-content-end">
+            <FormattedPrice price={order.total_cost}/>
+         {/* <span className='ml-5 font-medium text-blue-400'>Status: {order.status}</span> */}
         </p>
         <p className="text-gray-600 p-2">
           {order.shipping_address?.shipping_address}
@@ -88,11 +89,12 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
 
       {(order.payment === null && showPay) &&(
         <button
-          onClick={() => handlePay(order)}
-          className="absolute top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 group-hover:block hidden"
-        >
-          Pay
-        </button>
+        onClick={() => handlePay(order)}
+        className="absolute top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 block sm:hidden group-hover:block"
+      >
+        Pay
+      </button>
+      
       )}
     </li>
   );

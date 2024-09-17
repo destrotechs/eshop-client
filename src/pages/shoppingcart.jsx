@@ -21,7 +21,7 @@ const Cart = () => {
   };
   const { cart } = useCart();
   return (
-    <section className="max-w-6xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
+    <section className="max-w-8xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
     <Breadcrumb paths={breadcrumbPaths} />
     <ShoppingCart title="Shopping Cart"/>
     {Object.keys(cart['items']).length > 0 && (<div className="mt-6 flex justify-end">

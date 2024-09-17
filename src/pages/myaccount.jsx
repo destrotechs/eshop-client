@@ -128,12 +128,7 @@ const Profile = () => {
                   <span className="font-medium">Shipping Addresses</span>
                 </button>
               </li>
-              <li>
-                <button onClick={() => scrollToSection(paymentMethodsRef)} className="flex items-center w-full text-gray-900 hover:text-indigo-600">
-                  <CreditCardIcon className="w-6 h-6 mr-3" />
-                  <span className="font-medium">Payment Methods</span>
-                </button>
-              </li>
+              
               <li>
                 <button onClick={() => scrollToSection(ordersRef)} className="flex items-center w-full text-gray-900 hover:text-indigo-600">
                   <ListBulletIcon className="w-6 h-6 mr-3" />
@@ -200,7 +195,7 @@ const Profile = () => {
 
           <div ref={ordersRef} className="bg-white rounded-lg shadow-lg p-6">
             {/* <h2 className="text-1xl font-medium text-gray-600 mb-6">Orders</h2> */}
-            <OrderList orders={orders}/>
+            <OrderList orders={orders} showBreadcrumb={false}/>
           </div>
         </main>
       </div>

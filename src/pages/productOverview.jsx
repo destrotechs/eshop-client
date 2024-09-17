@@ -137,6 +137,7 @@ const ProductOverview = () => {
   return (
     <>
       <section className="max-w-7xl mx-auto pb-6">
+
         <Breadcrumb paths={breadcrumbPaths} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -228,7 +229,7 @@ const ProductOverview = () => {
             <h4 className="font-medium text-white bg-yellow-400 rounded p-4 text-center text-lg">
               Similar Products
             </h4>
-            <div className="flex flex-wrap gap-8 mt-6">
+            <div className="flex flex-wrap gap-4 mt-6 ml-20">
               {similar_products.map((product, index) => (
                 <ProductCard key={index} product={product} />
               ))}

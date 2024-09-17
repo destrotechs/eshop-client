@@ -144,7 +144,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                 </button>
 
                 {/* Left Menu */}
-                <div className={`flex items-center space-x-6 ${isMenuOpen ? 'block' : 'hidden'} md:flex`}>
+                <div className={`flex items-center space-x-6 ${isMenuOpen ? 'hidden' : 'block'} md:flex hidden sm:block`}>
                     {/* <Link to="/" onClick={closeMobileMenu} className="text-white-800 hover:text-gray-600 text-lg font-medium flex items-center">
                         <span className="text-cream-800 font-bold hover:text-indigo-900">ShopMATT</span>
                     </Link> */}
@@ -176,7 +176,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                 </div>
 
                 {/* Search Input */}
-                <form onSubmit={handleSearchSubmit} className="relative flex-grow mx-6 max-w-md">
+                <form onSubmit={handleSearchSubmit} className={`relative flex-grow mx-6 max-w-md  ${isMenuOpen ? 'hidden' : 'block' }`}>
                     <div className='relative w-full'>
                     <input
                         type="text"
@@ -208,7 +208,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                     {isLoggedIn ? (
                         <>
                             {/* User Profile */}
-                            <Menu as="div" className="relative">
+                            {!isMenuOpen && (<Menu as="div" className="relative">
                                 <Menu.Button className="flex items-center text-white-800 hover:text-blue-600">
                                 <UserCircleIcon className="w-7 h-7 text-white-100" />
                                     <ChevronDownIcon className="w-5 h-5 ml-2 text-white" />
@@ -233,7 +233,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                                         Logout
                                     </button>
                                 </Menu.Items>
-                            </Menu>
+                            </Menu>)}
 
                             {/* Cart */}
                             <div className="relative">
@@ -282,9 +282,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                         <Link to="/products" onClick={closeMobileMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white">
                             Shop
                         </Link>
-                        <Link to="/categories" onClick={closeMobileMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white">
-                            Categories
-                        </Link>
+                        
                         {isLoggedIn ? (
                             <>
                                 <Link to="/account" onClick={closeMobileMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white">
