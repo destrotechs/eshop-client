@@ -102,7 +102,7 @@ const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
                     id={`address-${address.id}`}
                     name="shippingAddress"
                     value={address.id} // Use address ID here
-                    checked={selectedAddress === address.id.toString()} // Check by ID
+                    checked={selectedAddress === address?.id?.toString()} // Check by ID
                     onChange={handleAddressChange}
                     className="mr-3 h-5 w-5 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                   />

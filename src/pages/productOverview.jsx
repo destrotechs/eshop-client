@@ -289,7 +289,7 @@ const ProductOverview = () => {
           onClick={handleCloseReviewsModal} // Close modal on overlay click
         >
           <div
-            className="relative w-full max-w-2xl max-h-[80vh] overflow-y-auto bg-white p-6 rounded-lg shadow-lg"
+            className="relative w-full max-w-6xl max-h-[80vh] overflow-y-auto bg-white p-6 rounded-lg shadow-lg"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
           >
             <h3 className="text-2xl font-semibold mb-4">Product Reviews</h3>
