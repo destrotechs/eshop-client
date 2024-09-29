@@ -4,7 +4,7 @@ import ShoppingCart from '../components/cartComponent';
 import FormattedPrice from "../assets/formatedprice";
 import apiClient from '../auth/apiClient';
 import { useNavigate } from 'react-router-dom';
-
+import Toast from '../assets/Toast';
 const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
   const { cart } = useCart();
   const { clearCart } = useCart();
@@ -13,7 +13,8 @@ const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
   const [selectedAddress, setSelectedAddress] = useState('');
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [newAddress, setNewAddress] = useState('');
-
+  const [showToast, setShowToast] = useState(false);
+const [message, setMessage] = useState('')
   // Logging addresses and addressList
   console.log("Addresses", addresses);
   console.log("AddressList", addressList);
@@ -42,8 +43,11 @@ const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
         const response = await apiClient.post(`/api/users/address`, { address: newAddress });
         if (response.status === 200) {
           // Add new address to the list and reset the input
-          setAddressList([...addressList, { id: response.data.id, shipping_address: newAddress }]);
+          console.log("Response",response);
+          setAddressList([...addressList, { id: response.data.data.id, shipping_address: newAddress }]);
           setNewAddress(''); // Clear the input field
+          setMessage(response.data.message);
+          setShowToast(true);
         }
       } catch (error) {
         console.error("Error adding address:", error);
@@ -82,6 +86,7 @@ const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
   };
 
   return (
+    <>
     <div className="flex flex-wrap p-6 bg-gray-100">
       {/* Left Column */}
       <div className="w-full lg:w-7/12 lg:pr-6 space-y-6">
@@ -203,6 +208,12 @@ const CheckoutCard = ({ addresses = [], paymentMethods = [] }) => {
         </button>
       </div>
     </div>
+    <Toast
+      message={message}
+      show={showToast}
+      onClose={() => setShowToast(false)}
+    />
+    </>
   );
 };
 
