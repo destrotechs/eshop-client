@@ -43,7 +43,7 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
 
       {expandedOrderId === order.id && (
         <div className="mt-6 bg-gray-50 p-4 rounded-lg shadow-inner">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Ordered Items</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Ordered Item(s</h3>
           <ul className="space-y-4">
             {Object.entries(parseItems(order.items)).map(([key, item]) => (
               <li

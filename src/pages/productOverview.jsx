@@ -133,6 +133,13 @@ const ProductOverview = () => {
   if (!product) {
     return <div>Product not found</div>;
   }
+  const colorMap = {
+    black: 'black',
+    red: 'red',
+    blue: 'blue',
+    green: 'green',
+    brown: 'brown',  // Use custom color or a specific hex code for brown
+  };
 
   return (
     <>
@@ -183,15 +190,31 @@ const ProductOverview = () => {
                   <span className="text-sm line-through text-gray-400 ml-3">${product.originalPrice}</span>
                 )}
               </div>
-              <h4 className="text-1xl font-bold text-gray-900">Options</h4><br/>
-              <div className="flex flex-wrap gap-1">
-                {colorsArray.map((color, index) => (
-                  <button
-                    key={index}
-                    className={`bg-${color}-500 text-white font-bold py-4 px-4 rounded-full hover:bg-${color}-700 transition-all`}
-                  />
-                ))}
+              <h4 className="text-1xl font-bold text-gray-500">Options</h4><br/>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {product.options && product.options.map((option, index) => {
+                  const color = option.toLowerCase(); // Ensure color is in lowercase
+
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => setProduct({ ...product, selectedOptionId: option })}
+                      className={`text-white font-bold py-4 px-4 rounded-full transition-all
+                        ${color === 'black' ? 'bg-black hover:bg-gray-800' :
+                          color === 'red' ? 'bg-red-500 hover:bg-red-700' :
+                          color === 'blue' ? 'bg-blue-500 hover:bg-blue-700' :
+                          color === 'green' ? 'bg-green-500 hover:bg-green-700' :
+                          color === 'brown' ? 'bg-yellow-800 hover:bg-yellow-900' : // Custom mapping for 'brown'
+                          'bg-gray-500 hover:bg-gray-700'} 
+                        ${option === product.selectedOptionId ? 'ring-4 ring-offset-2 ring-offset-gray-300 ring-gray-400' : ''}`}
+                    >
+                      <span className="sr-only">{toSentenceCase(option)}</span>
+                    </button>
+                  );
+                  
+                })}
               </div>
+
               {/* Ratings */}
               <div className="flex items-center mt-4">
                 <div className="flex items-center">
