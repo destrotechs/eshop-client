@@ -83,11 +83,29 @@ const navigate = new useNavigate();
   };
 
   // Handle coupon application
-  const handleCouponApply = () => {
-    if (couponCode === "DISCOUNT10") {
-      setDiscount(0.10); // 10% discount
+  const handleCouponApply = async (event) => {
+    event.preventDefault(); // Prevent default form submission behavior if the button is in a form
+    console.log('Coupon', couponCode);
+  
+    if (couponCode) {
+      try {
+        const response = await apiClient.post("/api/coupon/apply", { 'coupon': couponCode });
+        if (response.status === 200) {
+          // Handle successful coupon application (e.g., update discount, display message)
+          console.log("Coupon applied successfully", response.data);
+          // Optionally set discount or update cart based on the response
+          setDiscount(response.data.discount);
+          setToastMessage('Coupon applied successfully');
+          setShowToast(true);
+        }
+      } catch (error) {
+        console.error("Failed to apply coupon", error);
+        setToastMessage('Failed to apply coupon');
+        setShowToast(true);
+      }
     } else {
-      setDiscount(0);
+      setToastMessage('Please enter a coupon code');
+      setShowToast(true);
     }
   };
 
@@ -196,7 +214,7 @@ const navigate = new useNavigate();
                   <FormattedPrice price={cart.discount} />
                 </div>
                 <div className="flex justify-between">
-                  <p className="text-gray-700 font-medium">Tax:</p>
+                  <p className="text-gray-700 font-medium">Tax (16%):</p>
                   <FormattedPrice price={cart.tax} />
                 </div>
                 <div className="flex justify-between text-xl font-bold mt-4">
