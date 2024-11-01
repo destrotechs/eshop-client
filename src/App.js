@@ -20,6 +20,7 @@ import Wishlist from './pages/wishlist';
 import Orders from './pages/customerOrders';
 import Checkout from './pages/checkout';
 import Payment from './pages/payment';
+import MultiCaseUpload from './components/multiplecases';
 function App() {
   const dispatch = useDispatch();
 
@@ -54,6 +55,7 @@ function App() {
           <Route path='/orders' element={<MainLayout><Orders/></MainLayout>}></Route>
           <Route path='/checkout' element={<MainLayout><Checkout/></MainLayout>}></Route>
           <Route path='/order/payment' element={<MainLayout><Payment/></MainLayout>}></Route>
+          <Route path='/multipleuploas' element={<MainLayout><MultiCaseUpload/></MainLayout>}></Route>
       </Routes>
     </BrowserRouter>
     </WishlistProvider>

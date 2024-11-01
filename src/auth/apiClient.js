@@ -46,6 +46,9 @@ apiClient.interceptors.response.use(
         // Redirect to login page
         window.location.href = '/signin';
       }
+    }else if (error.response && error.response.status===400){
+      // Handle 400 errors here, such as invalid form data
+      console.log("Invalid form data: " + JSON.stringify(error.response.data.errors));
     }
 
     // Return the error to be handled elsewhere in the app
