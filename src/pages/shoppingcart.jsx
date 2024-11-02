@@ -12,8 +12,8 @@ import { useCart } from '../assets/CartContext';
 const Cart = () => {
   const breadcrumbPaths = [
     { label: 'Home', href: '/' },
-    { label: 'Shop', href: '/shop' },
-    { label: 'Products' }
+    { label: 'Products', href: '/shop'},
+    { label: 'Shopping Cart'}
   ];
   const navigate = new useNavigate()
   const handleCheckoutNav = () => {

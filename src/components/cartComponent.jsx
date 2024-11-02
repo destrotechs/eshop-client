@@ -17,7 +17,7 @@ const ShoppingCart = ({title='Shopping Cart',showSubtotalSection=true}) => {
   const [itemToRemove, setItemToRemove] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
-  // const [cart, setCart] = useState({ items: {}, subtotal: 0, total: 0, tax: 0, discount: 0 });
+  
   const { cart } = useCart();
   // Fetch cart data from API
   useEffect(() => {

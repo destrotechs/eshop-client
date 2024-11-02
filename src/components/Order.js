@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import FormattedPrice from '../assets/formatedprice';
 import { toSentenceCase } from '../assets/textUtil';
 import apiClient from '../auth/apiClient';
-
+import { Link } from 'react-router-dom';
 const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewModal = null, handlePay = null, showPay = true }) => {
   const [expanded, setExpanded] = useState(expandedOrderId === order.id);
   const [reviewStatus, setReviewStatus] = useState({}); // Store if each product has a review by the user
@@ -95,13 +95,14 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
                   className="flex items-center justify-between py-3 border-b last:border-none border-gray-300"
                 >
                   <div className="flex items-center space-x-4">
-                    <img
+                  <Link to={`/product/${item.product.id}`}>
+                  <img
                       src={item.product.images?.[0]?.img_url
                         ? `${apiClient.defaults.baseURL}${item.product.images[0].img_url.replace(/^\//, '')}`
                         : '/path/to/placeholder-image.jpg'}
                       alt={item.product.name}
                       className="w-16 h-16 object-cover rounded-md"
-                    />
+                    /></Link>
                     <div>
                       <p className="text-gray-900 font-medium">{toSentenceCase(item.product.name)}</p>
                       <p className="text-sm text-gray-600">
