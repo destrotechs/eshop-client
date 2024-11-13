@@ -48,6 +48,7 @@ function App() {
           <Route path="/products/" element={<MainLayout><ProductList/></MainLayout>}></Route>
           <Route path="/shop/" element={<MainLayout><ProductList/></MainLayout>}></Route>
           <Route path="/products/:common_name" element={<MainLayout><ProductList/></MainLayout>}></Route>
+          <Route path="/products/:deals?" element={<MainLayout><ProductList/></MainLayout>}></Route>
           <Route path='/account' element={<MainLayout><Profile/></MainLayout>}></Route>
           <Route path='/shoppingcart' element={<MainLayout><Cart/></MainLayout>}></Route>
           <Route path='/product/:productId' element={<MainLayout><ProductOverview/></MainLayout>}></Route>

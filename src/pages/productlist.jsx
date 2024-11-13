@@ -2,7 +2,7 @@ import React, { useEffect,useState } from 'react';
 import ProductCard from './productCard';
 import apiClient from '../auth/apiClient';
 import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import Breadcrumb from '../assets/breadCrump';
 import Loader from '../assets/Loader';
 const chunkArray = (array, size) => {
@@ -16,8 +16,10 @@ const chunkArray = (array, size) => {
 const ProductList = () => {
 const [loading, setLoading] = useState(true);
 
-    const {category_code} = useParams();
-    const {common_name} = useParams();
+const { category_code, common_name } = useParams();
+const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const deals = queryParams.get('deals');
     const [products, setProducts] = useState([]);
     const breadcrumbPaths = [
       { label: 'Home', href: '/' },
@@ -28,7 +30,8 @@ const [loading, setLoading] = useState(true);
         fetchProducts();
 
     }, []);
-console.log("search",common_name);
+    console.log("Deals parameter:", deals);
+
     const fetchProducts = async () => {
         const response = await apiClient.get('/api/products');
         if (response.status === 200) {
@@ -54,7 +57,12 @@ console.log("search",common_name);
           // Filter by both if both exist
           return product.category?.category_code === category_code &&
                  product.name?.toLowerCase().includes(common_name?.toLowerCase());
-        } else {
+        } else if (deals === 'true') {
+          // Check if `tags` is an array and then look for the 'deals' tag
+          return product.tags && product.tags.toLowerCase().includes('deals'.toLowerCase());
+        }
+        
+        else {
           // No filters, return all products
           return true;
         }
