@@ -34,7 +34,9 @@ const ProductOverview = () => {
       try {
         const response = await apiClient.get(`/api/products/${productId}`);
         if (response.status === 200) {
-          setProduct(response.data.data.product);
+          const productData = response.data.data.product;
+          productData.originalPrice = (1 + (productData.discount / 100)) * productData.price;
+          setProduct(productData);
           setSimilarProduct(response.data.data.similar_products);
           setReviews(response.data.data.product.ratings || []); // Set reviews
           setLoading(false);
@@ -148,8 +150,10 @@ const ProductOverview = () => {
         <Breadcrumb paths={breadcrumbPaths} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
             {/* Product Image Slider */}
             <div className="flex justify-center">
+              
               <Slider {...sliderSettings} className="w-full max-w-md">
                 {product.images && product.images.length > 0 ? (
                   product.images.map((image, idx) => {
@@ -187,7 +191,7 @@ const ProductOverview = () => {
                   <FormattedPrice price={product.price} />
                 </span>
                 {product.discount && (
-                  <span className="text-sm line-through text-gray-400 ml-3">${product.originalPrice}</span>
+                  <span className="text-md text-red-400 ml-3"><FormattedPrice crossed={true} price={parseInt(product.originalPrice)}/>&nbsp;-{parseInt(product.discount)}% OFF</span>
                 )}
               </div>
               <h4 className="text-1xl font-bold text-gray-500">Options</h4><br/>
@@ -234,14 +238,14 @@ const ProductOverview = () => {
               </div>
 
               {/* Add to Cart */}
-              <div className="mt-6 flex items-center space-x-3">
+              {product.stock >0 && (<div className="mt-6 flex items-center space-x-3">
                 <button onClick={() => handleAddToCart(product)} className="bg-indigo-600 inline-block text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">
                   <ShoppingCartIcon className="w-5 h-5 inline-block" /> &nbsp;Add to Cart
                 </button>
                 <button onClick={() => handleAddToWishlist(product)} className="bg-gray-100 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-orange-400 hover:text-white">
                   <HeartIcon className="w-5 h-5 text-orange-500 inline-block hover:text-white" />&nbsp;Add to Wishlist
                 </button>
-              </div>
+              </div>)}
             </div>
           </div>
         </div>
