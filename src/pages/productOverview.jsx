@@ -35,7 +35,7 @@ const ProductOverview = () => {
         const response = await apiClient.get(`/api/products/${productId}`);
         if (response.status === 200) {
           const productData = response.data.data.product;
-          productData.originalPrice = (1 + (productData.discount / 100)) * productData.price;
+          productData.discountedPrice = (1 - (productData.discount / 100)) * productData.price;
           setProduct(productData);
           setSimilarProduct(response.data.data.similar_products);
           setReviews(response.data.data.product.ratings || []); // Set reviews
@@ -188,10 +188,10 @@ const ProductOverview = () => {
 
               <div className="flex items-center my-4">
                 <span className="text-2xl font-bold text-indigo-600">
-                  <FormattedPrice price={product.price} />
+                  <FormattedPrice price={parseInt(product.discountedPrice)} />
                 </span>
                 {product.discount && (
-                  <span className="text-md text-red-400 ml-3"><FormattedPrice crossed={true} price={parseInt(product.originalPrice)}/>&nbsp;-{parseInt(product.discount)}% OFF</span>
+                  <span className="text-md text-red-400 ml-3"><FormattedPrice crossed={true} price={parseInt(product.price)}/>&nbsp;-{parseInt(product.discount)}% OFF</span>
                 )}
               </div>
               <h4 className="text-1xl font-bold text-gray-500">Options</h4><br/>

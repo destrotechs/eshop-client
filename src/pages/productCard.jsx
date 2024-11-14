@@ -90,7 +90,7 @@ const ProductCard = ({ product, isFeatured = false }) => {
 
     const isOutOfStock = product.stock === 0;
     const stockRemaining = product.stock <= 5 && product.stock > 0 ? `Only ${product.stock} left!` : null;
-    const originalPrice = (1+product.discount/100)*product.price;
+    const discountedPrice = (1-product.discount/100)*product.price;
 
     return (
         <>
@@ -122,7 +122,7 @@ const ProductCard = ({ product, isFeatured = false }) => {
                             </span>
                         )}
                     </p>
-                    <p className="text-lg font-semibold mt-4"><FormattedPrice price={product.price} />&nbsp;<FormattedPrice price={parseInt(originalPrice)} crossed={true}/></p>
+                    <p className="text-lg font-semibold mt-4"><FormattedPrice price={parseInt(discountedPrice)} />&nbsp;{product.discount && (<FormattedPrice price={parseInt(product.price)} crossed={true}/>)}</p>
 
                     {/* Stock Availability */}
                     {isOutOfStock ? (
