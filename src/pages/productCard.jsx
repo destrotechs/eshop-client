@@ -8,7 +8,7 @@ import Toast from '../assets/Toast';
 import { eventEmitter } from '../assets/EventEmitter';
 import { useWishlist } from '../assets/WishlistContext';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product,isFeatured=false }) => {
     const [toastMessage, setToastMessage] = useState('');
     const [showToast, setShowToast] = useState(false);
     const [expanded, setExpanded] = useState(false);
@@ -92,8 +92,8 @@ const ProductCard = ({ product }) => {
 
     return (
         <>
-            <div className="bg-white shadow-sm rounded-lg pb-4 w-60 mb-3 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                <Link to={`/product/${product.id}`} className="block">
+<div className={`bg-white shadow-sm rounded-lg pb-4 ${!isFeatured ? 'w-60' : 'w-100'} mb-3 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg`}>
+<Link to={`/product/${product.id}`} className="block">
                     <img
                         src={imageUrl}
                         alt={product.name}
