@@ -8,7 +8,7 @@ import Toast from '../assets/Toast';
 import { eventEmitter } from '../assets/EventEmitter';
 import { useWishlist } from '../assets/WishlistContext';
 
-const ProductCard = ({ product,isFeatured=false }) => {
+const ProductCard = ({ product, isFeatured = false }) => {
     const [toastMessage, setToastMessage] = useState('');
     const [showToast, setShowToast] = useState(false);
     const [expanded, setExpanded] = useState(false);
@@ -26,20 +26,18 @@ const ProductCard = ({ product,isFeatured=false }) => {
         ? `${apiClient.defaults.baseURL}${product.images[0].img_url.replace(/^\//, '')}`
         : '/path/to/placeholder-image.jpg';
 
-        const handleAddToCart = async (product) => {
-            const response = await apiClient.post('/api/shopping/cart/', { 'product_id': product.id });
-            if (response.status === 200) {
-                // Emit an event to update the cart item count
-                eventEmitter.emit('cartUpdated');
-                
-                // Show a toast message on success
-                setToastMessage(response.data.message);
-                setShowToast(true);
-            } else {
-                setToastMessage('Failed to add item to cart.');
-                setShowToast(true);
-            }
-        };
+    const handleAddToCart = async (product) => {
+        const response = await apiClient.post('/api/shopping/cart/', { 'product_id': product.id });
+        if (response.status === 200) {
+            // Emit an event to update the cart item count
+            eventEmitter.emit('cartUpdated');
+            setToastMessage(response.data.message);
+            setShowToast(true);
+        } else {
+            setToastMessage('Failed to add item to cart.');
+            setShowToast(true);
+        }
+    };
 
     const handleAddToWishlist = async (product) => {
         const response = await apiClient.post('/api/shopping/wishlist/', { 'product_id': product.id });
@@ -47,7 +45,7 @@ const ProductCard = ({ product,isFeatured=false }) => {
             await fetchWishlist();
             setToastMessage(response.data.message);
             setShowToast(true);
-        } 
+        }
     };
 
     const handleExpandDescription = () => {
@@ -90,16 +88,26 @@ const ProductCard = ({ product,isFeatured=false }) => {
         }
     };
 
+    const isOutOfStock = product.stock === 0;
+    const stockRemaining = product.stock <= 5 && product.stock > 0 ? `Only ${product.stock} left!` : null;
+
     return (
         <>
-<div className={`bg-white shadow-sm rounded-lg pb-4 ${!isFeatured ? 'w-60' : 'w-100'} mb-3 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg`}>
-<Link to={`/product/${product.id}`} className="block">
+            <div className={`bg-white shadow-sm rounded-lg pb-4 ${!isFeatured ? 'w-60' : 'w-100'} mb-3 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg relative`}>
+                <Link to={`/product/${product.id}`} className="block">
                     <img
                         src={imageUrl}
                         alt={product.name}
                         className="w-full h-40 object-cover rounded-t-lg"
                     />
                 </Link>
+                {/* Floating Discount */}
+                {product.discount > 0 && (
+                    <div className="absolute top-2 right-2 bg-orange-500 text-white px-3 py-1 text-sm rounded-full">
+                        {parseInt(product.discount)}% OFF
+                    </div>
+                )}
+
                 <div className="mt-4 pl-3 pr-3">
                     <h4 className="text-xl font-bold">{toSentenceCase(product.name)}</h4>
                     <p className="text-gray-700 mt-2">
@@ -114,8 +122,16 @@ const ProductCard = ({ product,isFeatured=false }) => {
                         )}
                     </p>
                     <p className="text-lg font-semibold mt-4"><FormattedPrice price={product.price} /></p>
+
+                    {/* Stock Availability */}
+                    {isOutOfStock ? (
+                        <p className="text-red-500 font-semibold mt-2">Out of Stock</p>
+                    ) : stockRemaining ? (
+                        <p className="text-yellow-600 font-semibold mt-2">{stockRemaining}</p>
+                    ) : null}
                 </div>
-                <div className="flex justify-between mt-4 pl-3 pr-3">
+
+                {!isOutOfStock && (<div className="flex justify-between mt-4 pl-3 pr-3">
                     <button
                         className="p-2 rounded-full text-blue-600 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                         onClick={() => handleAddToCart(product)}
@@ -134,9 +150,9 @@ const ProductCard = ({ product,isFeatured=false }) => {
                     >
                         <StarIcon className="w-6 h-6" />
                     </button>
-                </div>
+                </div>)}
             </div>
-            
+
             {/* Rating Modal */}
             {showRatingModal && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">

@@ -25,6 +25,7 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
     const statuses = {};
     
     const items = parseItems(order.items);
+    console.log(items);
     for (const item of items) {
       if (item?.product?.id) { // Ensure product and id are defined
         try {
@@ -110,8 +111,9 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
                       </p>
                     </div>
                   </div>
-                  <div className="text-gray-900 font-medium">
+                  <div className="text-gray-900">
                     <FormattedPrice price={item.total} />
+                    {item.discount && (<p className='text-green-500 font-small'>Discount {parseInt(item.discount)}%</p>)}
                   </div>
                   {order.status === 'Delivered' && !hasReview && (
                     <button

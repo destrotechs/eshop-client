@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 // Create an Axios instance
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8001/', // Change to localhost
+  baseURL: 'http://127.0.0.1:8001/', // Change to localhost
   withCredentials: true, // Ensures cookies are sent with the request
 });
 
