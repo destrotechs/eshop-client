@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../auth/apiClient';
 import { Link } from 'react-router-dom';
+import { toSentenceCase } from '../assets/textUtil';
 
 // Function to generate a random gradient color
 const generateRandomGradient = () => {
@@ -41,10 +42,10 @@ const CategorySection = () => {
               <div
                 className={`w-full h-64 rounded-md shadow-lg bg-gradient-to-r ${generateRandomGradient()} flex items-center justify-center`}
               >
-                <span className="text-white text-xl font-semibold">{category.category_name}</span>
+                <span className="text-white text-xl font-semibold">{category.category_name.toUpperCase()}</span>
               </div>
               <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="text-white text-xl font-semibold">{category.category_name}</span>
+                <span className="text-white text-xl font-semibold">{category.category_name.toUpperCase()}</span>
               </div>
             </Link>
           </div>

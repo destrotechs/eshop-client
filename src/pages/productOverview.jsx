@@ -196,7 +196,7 @@ const ProductOverview = () => {
               </div>
               <h4 className="text-1xl font-bold text-gray-500">Options</h4><br/>
               <div className="flex flex-wrap gap-2 mb-4">
-                {product.options && product.options.map((option, index) => {
+                {product.options!==null && product.options.map((option, index) => {
                   const color = option.toLowerCase(); // Ensure color is in lowercase
 
                   return (

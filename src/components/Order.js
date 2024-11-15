@@ -3,6 +3,7 @@ import FormattedPrice from '../assets/formatedprice';
 import { toSentenceCase } from '../assets/textUtil';
 import apiClient from '../auth/apiClient';
 import { Link } from 'react-router-dom';
+
 const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewModal = null, handlePay = null, showPay = true }) => {
   const [expanded, setExpanded] = useState(expandedOrderId === order.id);
   const [reviewStatus, setReviewStatus] = useState({}); // Store if each product has a review by the user
@@ -19,13 +20,10 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
     }
   };
   
-  
-  // Function to check if the user has reviewed each product
   const checkReviews = async () => {
     const statuses = {};
     
     const items = parseItems(order.items);
-    console.log(items);
     for (const item of items) {
       if (item?.product?.id) { // Ensure product and id are defined
         try {
@@ -40,7 +38,6 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
     }
     setReviewStatus(statuses);
   };
-  
 
   useEffect(() => {
     checkReviews();
@@ -51,6 +48,23 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
       return str.substring(0, 10) + '...';
     }
     return str;
+  };
+
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case 'Created':
+        return <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full">Created</span>;
+      case 'Confirmed':
+        return <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">Confirmed</span>;
+      case 'Shipped':
+        return <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full">Shipped</span>;
+      case 'Delivered':
+        return <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-teal-800 bg-teal-100 rounded-full">Delivered</span>;
+      case 'Cancelled':
+        return <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full">Cancelled</span>;
+      default:
+        return <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-800 bg-gray-100 rounded-full">Unknown</span>;
+    }
   };
 
   return (
@@ -80,6 +94,10 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
         <p className="text-gray-600 p-2">
           {order.shipping_address?.shipping_address}
         </p>
+        {/* Order Status Badge */}
+        <div className="col-span-3 p-2 flex justify-end">
+          {getStatusBadge(order.status)}
+        </div>
       </div>
 
       {expandedOrderId === order.id && (
@@ -88,7 +106,6 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
           <ul className="space-y-4">
             {Object.entries(parseItems(order.items)).map(([key, item]) => {
               const hasReview = reviewStatus[item.product.id];
-              
 
               return (
                 <li
@@ -96,14 +113,15 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
                   className="flex items-center justify-between py-3 border-b last:border-none border-gray-300"
                 >
                   <div className="flex items-center space-x-4">
-                  <Link to={`/product/${item.product.id}`}>
-                  <img
-                      src={item.product.images?.[0]?.img_url
-                        ? `${apiClient.defaults.baseURL}${item.product.images[0].img_url.replace(/^\//, '')}`
-                        : '/path/to/placeholder-image.jpg'}
-                      alt={item.product.name}
-                      className="w-16 h-16 object-cover rounded-md"
-                    /></Link>
+                    <Link to={`/product/${item.product.id}`}>
+                      <img
+                        src={item.product.images?.[0]?.img_url
+                          ? `${apiClient.defaults.baseURL}${item.product.images[0].img_url.replace(/^\//, '')}`
+                          : '/path/to/placeholder-image.jpg'}
+                        alt={item.product.name}
+                        className="w-16 h-16 object-cover rounded-md"
+                      />
+                    </Link>
                     <div>
                       <p className="text-gray-900 font-medium">{toSentenceCase(item.product.name)}</p>
                       <p className="text-sm text-gray-600">
@@ -113,7 +131,7 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
                   </div>
                   <div className="text-gray-900">
                     <FormattedPrice price={item.total} />
-                    {item.discount && (<p className='text-green-500 font-small'>Discount {parseInt(item.discount)}%</p>)}
+                    {item.discount && (<p className="text-green-500 font-small">Discount {parseInt(item.discount)}%</p>)}
                   </div>
                   {order.status === 'Delivered' && !hasReview && (
                     <button
