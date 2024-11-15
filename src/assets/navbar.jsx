@@ -3,13 +3,14 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Menu } from '@headlessui/react';
 import {
     ChevronDownIcon, ShoppingCartIcon, ListBulletIcon, HeartIcon,
-    MagnifyingGlassIcon, UserCircleIcon, PowerIcon, XMarkIcon, Bars3Icon
+    MagnifyingGlassIcon, UserCircleIcon, PowerIcon, XMarkIcon, Bars3Icon,BellIcon,CheckCircleIcon
 } from '@heroicons/react/24/outline';
 import apiClient from '../auth/apiClient';
 import { toSentenceCase } from './textUtil';
 import { useCart } from './CartContext';
 import { useWishlist } from './WishlistContext'; // Import WishlistContext
 import { eventEmitter } from './EventEmitter';
+import { useNotifications } from './NotificationsContext'
 
 const Navbar = ({ isLoggedIn, onLogout, user }) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -17,6 +18,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
     const [suggestions, setSuggestions] = useState([]);
     const [selectedSuggestion, setSelectedSuggestion] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { notifications,notificationsCount, fetchNotifications,markAsRead } = useNotifications();
 
     const { cartItemCount, fetchCart } = useCart();
     const { wishlistItemCount, fetchWishlist } = useWishlist(); // Use WishlistContext
@@ -36,6 +38,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
         fetchCategories();
         fetchCart();
         fetchWishlist(); // Fetch wishlist
+        fetchNotifications(); // Fetch notifications
 
         // Handle cart updates
         const handleCartUpdate = (newCartData) => {
@@ -58,6 +61,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
 
     useEffect(() => {
         // Fetch search suggestions
+       
         const fetchSuggestions = async () => {
             if (searchQuery.length > 2) {
                 try {
@@ -81,6 +85,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
+    
 
     const handleSuggestionClick = (suggestion) => {
         setSelectedSuggestion(suggestion);
@@ -100,6 +105,8 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
     const closeMobileMenu = () => {
         setIsMenuOpen(false);
     };
+    const notificationItems = notifications?.items || [];
+    console.log("Notifications ",typeof(notifications));
 
     return (
         <>
@@ -258,6 +265,47 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                                     )}
                                 </Link>
                             </div>
+                            <Menu as="div" className="relative">
+      <Menu.Button className="flex items-center text-white-800 hover:text-blue-600">
+        <BellIcon className="w-7 h-7 text-white-100" />
+        {notificationsCount > 0 && (
+          <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white-700 bg-orange-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+            {notificationsCount}
+          </span>
+        )}
+        <ChevronDownIcon className="w-5 h-5 ml-2 text-white" />
+      </Menu.Button>
+
+      {/* Dropdown menu with notifications */}
+      <Menu.Items className="absolute right-0 w-72 mt-2 bg-white shadow-lg ring-1 ring-gray-300 divide-y divide-gray-100 rounded-xl max-h-96 overflow-auto">
+        {notificationItems.length > 0 ? (
+          notificationItems.map((notification) => (
+            <div key={notification.id}>
+              <Link
+                to="/orders"
+                onClick={closeMobileMenu}
+                className="flex items-center px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-gray-900"
+              >
+                <UserCircleIcon className="w-5 h-5 mr-2 text-gray-600" />
+                {/* Show notification message */}
+                {notification?.data?.message || 'No message available'}
+              </Link>
+
+              {/* Mark as read button */}
+              <button
+                onClick={() => markAsRead(notification.id)} // Assuming markAsRead is a function that marks the notification as read
+                className="flex items-center px-4 py-1 text-sm text-gray-500 hover:text-blue-600"
+              >
+                <CheckCircleIcon className="w-4 h-4 mr-2 text-green-500" />
+                Mark as Read
+              </button>
+            </div>
+          ))
+        ) : (
+          <div className="px-4 py-2 text-gray-600">No notifications</div>
+        )}
+      </Menu.Items>
+    </Menu>
                         </>
                     ) : (
                         <>

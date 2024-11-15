@@ -21,6 +21,7 @@ import Orders from './pages/customerOrders';
 import Checkout from './pages/checkout';
 import Payment from './pages/payment';
 import MultiCaseUpload from './components/multiplecases';
+import {NotificationsProvider} from './assets/NotificationsContext';
 function App() {
   const dispatch = useDispatch();
 
@@ -37,6 +38,7 @@ function App() {
   }, [dispatch]);
 
   return (
+    <NotificationsProvider>
     <CartProvider>
       <WishlistProvider>
     <BrowserRouter>
@@ -61,6 +63,7 @@ function App() {
     </BrowserRouter>
     </WishlistProvider>
     </CartProvider>
+    </NotificationsProvider>
   );
 }
 
