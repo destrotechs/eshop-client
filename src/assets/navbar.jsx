@@ -273,14 +273,13 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
             {notificationsCount}
           </span>
         )}
-        <ChevronDownIcon className="w-5 h-5 ml-2 text-white" />
       </Menu.Button>
 
       {/* Dropdown menu with notifications */}
       <Menu.Items className="absolute right-0 w-95 mt-2 bg-white shadow-lg ring-1 ring-gray-300 divide-y divide-gray-100 rounded-sm max-h-96 overflow-auto">
         {notificationItems.length > 0 ? (
           notificationItems.map((notification) => (
-            <div key={notification.id}>
+            <div key={notification.id} className='p-2 bg-white-200'>
               <Link
                 to="/orders"
                 onClick={closeMobileMenu}
