@@ -277,7 +277,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
       </Menu.Button>
 
       {/* Dropdown menu with notifications */}
-      <Menu.Items className="absolute right-0 w-72 mt-2 bg-white shadow-lg ring-1 ring-gray-300 divide-y divide-gray-100 rounded-xl max-h-96 overflow-auto">
+      <Menu.Items className="absolute right-0 w-95 mt-2 bg-white shadow-lg ring-1 ring-gray-300 divide-y divide-gray-100 rounded-sm max-h-96 overflow-auto">
         {notificationItems.length > 0 ? (
           notificationItems.map((notification) => (
             <div key={notification.id}>
@@ -286,7 +286,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
                 onClick={closeMobileMenu}
                 className="flex items-center px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-gray-900"
               >
-                <UserCircleIcon className="w-5 h-5 mr-2 text-gray-600" />
+                <BellIcon className="w-5 h-5 mr-2 text-gray-600" />
                 {/* Show notification message */}
                 {notification?.data?.message || 'No message available'}
               </Link>

@@ -238,14 +238,17 @@ const ProductOverview = () => {
               </div>
 
               {/* Add to Cart */}
-              {product.stock >0 && (<div className="mt-6 flex items-center space-x-3">
+              {product.stock >0? (<div className="mt-6 flex items-center space-x-3">
                 <button onClick={() => handleAddToCart(product)} className="bg-indigo-600 inline-block text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">
                   <ShoppingCartIcon className="w-5 h-5 inline-block" /> &nbsp;Add to Cart
                 </button>
                 <button onClick={() => handleAddToWishlist(product)} className="bg-gray-100 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-orange-400 hover:text-white">
                   <HeartIcon className="w-5 h-5 text-orange-500 inline-block hover:text-white" />&nbsp;Add to Wishlist
                 </button>
-              </div>)}
+              </div>):
+              (
+                <span className="text-muted text-red-700 mt-4">Out of Stock</span>
+              )}
             </div>
           </div>
         </div>

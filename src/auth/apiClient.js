@@ -1,5 +1,5 @@
+// apiClient.js
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 // Create an Axios instance
 const apiClient = axios.create({
@@ -16,44 +16,65 @@ apiClient.interceptors.request.use(
       // Set the Authorization header with the token
       config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   },
   (error) => {
-    console.log("Error: " + JSON.stringify(error));
-    console.log("Status: " + error.response.status);
-    if (error.response && error.response.status === 401) {
-      // Redirect to login page
-      window.location.href = '/signin'; // or use history.push('/login') if you're using react-router
-    }
+    console.error("Request error: ", error);
     return Promise.reject(error);
   }
 );
+
+// Response interceptor with enhanced error handling and Toast logic
+let showToast; // External function to show Toast, injected later
+
 apiClient.interceptors.response.use(
   (response) => {
-    // If the response is successful, simply return the response
+    // Optionally show success Toast for specific responses
+    if (response.data && response.data.success!==null && showToast) {
+      showToast(response.data.success, 'success');
+    }
     return response;
   },
   (error) => {
-    console.log("Error: " + JSON.stringify(error));
+    console.error("Response error: ", error);
 
-    // Avoid redirect loop for 401 errors by checking if the request is already on the login page
-    if (error.response && error.response.status === 401) {
-      const currentPath = window.location.pathname;
+    if (error.response) {
+      const { status, data } = error.response;
 
-      // Check if the current path is not the login page to prevent a redirect loop
-      if (currentPath !== '/signin') {
-        // Redirect to login page
-        window.location.href = '/signin';
+      if (status === 401) {
+        const currentPath = window.location.pathname;
+        if (currentPath !== '/signin') {
+          if (showToast) showToast('Unauthorized access. Redirecting to login.', 'error');
+          setTimeout(() => {
+            window.location.href = '/signin';
+          }, 2000); // Delay for user to see the Toast
+        }
+      } else if (status === 400) {
+        // Display specific error message from response.data.error if available
+        if (data.error && showToast) {
+          showToast(data.error, 'error');
+        } else if (showToast) {
+          showToast('Invalid form data. Please check your inputs.', 'error');
+        }
+      } else {
+        // Display general errors from response.data.error or fallback to a default message
+        if (data.error && showToast) {
+          showToast(data.error, 'error');
+        } else if (showToast) {
+          showToast('An unexpected error occurred. Please try again.', 'error');
+        }
       }
-    }else if (error.response && error.response.status===400){
-      // Handle 400 errors here, such as invalid form data
-      console.log("Invalid form data: " + JSON.stringify(error.response.data.errors));
+    } else {
+      if (showToast) showToast('Network error. Please check your connection.', 'error');
     }
 
-    // Return the error to be handled elsewhere in the app
     return Promise.reject(error);
   }
 );
+
+// Function to inject the showToast function
+export const setToastFunction = (toastFn) => {
+  showToast = toastFn;
+};
 
 export default apiClient;

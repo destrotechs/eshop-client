@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import logo from './logo.svg';
@@ -22,8 +22,25 @@ import Checkout from './pages/checkout';
 import Payment from './pages/payment';
 import MultiCaseUpload from './components/multiplecases';
 import {NotificationsProvider} from './assets/NotificationsContext';
+import apiClient, { setToastFunction } from './auth/apiClient'
+import Toast from './assets/Toast';
+import OrderDetails from './components/OrderDetails';
 function App() {
   const dispatch = useDispatch();
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+  };
+
+  const closeToast = () => {
+    setToast((prev) => ({ ...prev, show: false }));
+  };
+
+  // Set the showToast function for the Axios interceptor
+  React.useEffect(() => {
+    setToastFunction(showToast);
+  }, []);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('accessToken');
@@ -38,6 +55,7 @@ function App() {
   }, [dispatch]);
 
   return (
+    <>
     <NotificationsProvider>
     <CartProvider>
       <WishlistProvider>
@@ -59,11 +77,19 @@ function App() {
           <Route path='/checkout' element={<MainLayout><Checkout/></MainLayout>}></Route>
           <Route path='/order/payment' element={<MainLayout><Payment/></MainLayout>}></Route>
           <Route path='/multipleuploas' element={<MainLayout><MultiCaseUpload/></MainLayout>}></Route>
+          <Route path="/orders/:orderID" element={<MainLayout><OrderDetails/></MainLayout>} />
       </Routes>
     </BrowserRouter>
     </WishlistProvider>
     </CartProvider>
     </NotificationsProvider>
+    <Toast
+        message={toast.message}
+        show={toast.show}
+        onClose={closeToast}
+        type={toast.type}
+      />
+      </>
   );
 }
 

@@ -85,9 +85,11 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
       onClick={() => handleToggleExpand(order.id)}
     >
       <div className="grid grid-cols-3 divide-x">
-        <p className="text-gray-900 font-semibold p-2">
+        <Link 
+        to={`/orders/${order.id}`}
+        className="text-gray-900 font-semibold p-2">
           {`Order #${expandedOrderId === order.id ? order.order_number : shortenString(order.order_number)}`}
-        </p>
+        </Link>
         <p className="text-gray-900 font-semibold p-2 flex justify-content-end">
           <FormattedPrice price={order.total_cost} />
         </p>

@@ -207,19 +207,19 @@ const navigate = new useNavigate();
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <p className="text-gray-700 font-medium">Subtotal:</p>
-                  <FormattedPrice price={cart.subtotal} />
+                  <FormattedPrice price={parseInt(cart.subtotal)} />
                 </div>
                 <div className="flex justify-between">
                   <p className="text-gray-700 font-medium">Discount:</p>
-                  <FormattedPrice price={cart.discount} />
+                  <FormattedPrice price={parseInt(cart.discount)} />
                 </div>
                 <div className="flex justify-between">
-                  <p className="text-gray-700 font-medium">Tax (16%):</p>
-                  <FormattedPrice price={cart.tax} />
+                  <p className="text-gray-700 font-medium">Tax (VAT):</p>
+                  <FormattedPrice price={parseInt(cart.tax)} />
                 </div>
                 <div className="flex justify-between text-xl font-bold mt-4">
                   <p className="text-gray-900">Total:</p>
-                  <FormattedPrice price={cart.total} />
+                  <FormattedPrice price={parseInt(cart.total)} />
                 </div>
               </div>
             </div>)}  
