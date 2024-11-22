@@ -79,7 +79,7 @@ const location = useLocation();
             <Breadcrumb paths={breadcrumbPaths} />
             {productChunks.length > 0 ? (
               productChunks.map((chunk, rowIndex) => (
-                <div key={rowIndex} className="flex flex-wrap justify-center gap-4 mb-8">
+                <div key={rowIndex} className="flex flex-wrap justify-center gap-4 mb-8 sm:justify-center sm:m-2">
                   {chunk.length > 0 ? (
                     chunk.map(product => (
                       <ProductCard key={product.id} product={product} />

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8001/', // Change to localhost
+  baseURL: 'http://192.168.100.36:8001/', // Change to localhost
   withCredentials: true, // Ensures cookies are sent with the request
 });
 
@@ -47,7 +47,7 @@ apiClient.interceptors.response.use(
           if (showToast) showToast('Unauthorized access. Redirecting to login.', 'error');
           setTimeout(() => {
             window.location.href = '/signin';
-          }, 2000); // Delay for user to see the Toast
+          }, 3000); // Delay for user to see the Toast
         }
       } else if (status === 400) {
         // Display specific error message from response.data.error if available

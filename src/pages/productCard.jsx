@@ -7,7 +7,7 @@ import { toSentenceCase } from '../assets/textUtil';
 import Toast from '../assets/Toast';
 import { eventEmitter } from '../assets/EventEmitter';
 import { useWishlist } from '../assets/WishlistContext';
-
+import OutputContent from '../assets/product_description';
 const ProductCard = ({ product, isFeatured = false }) => {
     const [toastMessage, setToastMessage] = useState('');
     const [showToast, setShowToast] = useState(false);
@@ -94,65 +94,77 @@ const ProductCard = ({ product, isFeatured = false }) => {
 
     return (
         <>
-            <div className={`bg-white shadow-sm rounded-lg pb-4 ${!isFeatured ? 'w-60' : 'w-100'} mb-3 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg relative`}>
-                <Link to={`/product/${product.id}`} className="block">
-                    <img
-                        src={imageUrl}
-                        alt={product.name}
-                        className="w-full h-40 object-cover rounded-t-lg"
-                    />
-                </Link>
-                {/* Floating Discount */}
-                {product.discount > 0 && (
-                    <div className="absolute top-2 right-2 bg-orange-500 text-white px-3 py-1 text-sm rounded-full">
-                        {parseInt(product.discount)}% OFF
-                    </div>
-                )}
+            <div
+  className={`bg-white shadow-sm rounded-lg pb-4 
+              ${!isFeatured ? 'w-full sm:w-60 max-w-sm' : 'w-full sm:w-80 max-w-md'} 
+              mb-3 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg relative`}
+>
+  <Link to={`/product/${product.id}`} className="block">
+    <img
+      src={imageUrl}
+      alt={product.name}
+      className="w-full h-40 object-cover rounded-t-lg"
+    />
+  </Link>
+  {/* Floating Discount */}
+  {product.discount > 0 && (
+    <div className="absolute top-2 right-2 bg-orange-500 text-white px-3 py-1 text-sm rounded-full">
+      {parseInt(product.discount)}% OFF
+    </div>
+  )}
 
-                <div className="mt-4 pl-3 pr-3">
-                    <h4 className="text-xl font-bold">{toSentenceCase(product.name)}</h4>
-                    <p className="text-gray-700 mt-2">
-                        {truncateDescription(toSentenceCase(product.description), 40)}
-                        {product.description.length > 40 && (
-                            <span
-                                className="text-blue-500 cursor-pointer ml-1"
-                                onClick={handleExpandDescription}
-                            >
-                                {expanded ? ' Show less' : ' ...more'}
-                            </span>
-                        )}
-                    </p>
-                    <p className="text-lg font-semibold mt-4"><FormattedPrice price={parseInt(discountedPrice)} />&nbsp;{product.discount && (<FormattedPrice price={parseInt(product.price)} crossed={true}/>)}</p>
+  <div className="mt-4 pl-3 pr-3">
+    <h4 className="text-xl font-bold">{toSentenceCase(product.name)}</h4>
+    <p className="text-gray-700 mt-2">
+    <OutputContent htmlContent={truncateDescription(toSentenceCase(product.description), 40)}/>
+      {product.description.length > 40 && (
+        <span
+          className="text-blue-500 cursor-pointer ml-1"
+          onClick={handleExpandDescription}
+        >
+          {expanded ? ' Show less' : ' ...more'}
+        </span>
+      )}
+    </p>
+    <p className="text-lg font-semibold mt-4">
+      <FormattedPrice price={parseInt(discountedPrice)} />&nbsp;
+      {product.discount && (
+        <FormattedPrice price={parseInt(product.price)} crossed={true} />
+      )}
+    </p>
 
-                    {/* Stock Availability */}
-                    {isOutOfStock ? (
-                        <p className="text-red-500 font-semibold mt-2">Out of Stock</p>
-                    ) : stockRemaining ? (
-                        <p className="text-yellow-600 font-semibold mt-2">{stockRemaining}</p>
-                    ) : null}
-                </div>
+    {/* Stock Availability */}
+    {isOutOfStock ? (
+      <p className="text-red-500 font-semibold mt-2">Out of Stock</p>
+    ) : stockRemaining ? (
+      <p className="text-yellow-600 font-semibold mt-2">{stockRemaining}</p>
+    ) : null}
+  </div>
 
-                {!isOutOfStock && (<div className="flex justify-between mt-4 pl-3 pr-3">
-                    <button
-                        className="p-2 rounded-full text-blue-600 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                        onClick={() => handleAddToCart(product)}
-                    >
-                        <ShoppingCartIcon className="w-6 h-6" />
-                    </button>
-                    <button
-                        className="p-2 rounded-full text-orange-500 hover:bg-orange-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
-                        onClick={() => handleAddToWishlist(product)}
-                    >
-                        <HeartIcon className="w-6 h-6" />
-                    </button>
-                    <button
-                        className="p-2 rounded-full text-yellow-400 hover:bg-yellow-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                        onClick={handleOpenRatingModal}
-                    >
-                        <StarIcon className="w-6 h-6" />
-                    </button>
-                </div>)}
-            </div>
+  {!isOutOfStock && (
+    <div className="flex justify-between mt-4 pl-3 pr-3">
+      <button
+        className="p-2 rounded-full text-blue-600 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        onClick={() => handleAddToCart(product)}
+      >
+        <ShoppingCartIcon className="w-6 h-6" />
+      </button>
+      <button
+        className="p-2 rounded-full text-orange-500 hover:bg-orange-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+        onClick={() => handleAddToWishlist(product)}
+      >
+        <HeartIcon className="w-6 h-6" />
+      </button>
+      <button
+        className="p-2 rounded-full text-yellow-400 hover:bg-yellow-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+        onClick={handleOpenRatingModal}
+      >
+        <StarIcon className="w-6 h-6" />
+      </button>
+    </div>
+  )}
+</div>
+
 
             {/* Rating Modal */}
             {showRatingModal && (

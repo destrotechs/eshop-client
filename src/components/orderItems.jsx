@@ -19,7 +19,7 @@ const orderItems = parseItems(items);
 console.log('OrderItems', orderItems);
   return (
     <div className="overflow-x-auto bg-white shadow-md rounded-lg p-6">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Order Items</h3>
+      {/* <h3 className="text-lg font-bold text-gray-800 mb-4">Order Items</h3> */}
       <table className="w-full table-auto">
         <thead>
           <tr className="bg-gray-50">
@@ -55,7 +55,7 @@ console.log('OrderItems', orderItems);
                 <td className="px-4 py-2"><FormattedPrice price={item.price}/></td>
                 <td className="px-4 py-2">{item.quantity || 0}</td>
                 <td className="px-4 py-2">{item.discount ? `${item.discount}%` : 0}</td>
-                <td className="px-4 py-2"><FormattedPrice price={item.total}/></td>
+                <td className="px-4 py-2"><FormattedPrice price={parseInt(item.total)}/></td>
               </tr>
             );
           })}

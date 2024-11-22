@@ -91,10 +91,12 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
         setSelectedSuggestion(suggestion);
         setSearchQuery(suggestion);
         setSuggestions([]);
+        navigate(`/products/${searchQuery}`);
     };
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
+        setSuggestions([]);
         navigate(`/products/${searchQuery}`);
     };
 
@@ -110,7 +112,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
 
     return (
         <>
-        <header className="sticky top-0 bg-blue-500  text-white z-50 flex justify-between items-center p-4">
+        <header className="sticky top-0 bg-blue-600  text-white z-50 flex justify-between items-center p-4">
     <div className='flex items-center justify-between px-4 py-4 max-w-screen-xl mx-auto'>
     <div className="flex text-xl  px-4 max-w-screen-xl font-bold">
         <Link to={'/'}>shopMATT</Link>
@@ -136,7 +138,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
     </div>
 </header>
 
-        <header className="sticky top-0 bg-blue-500  text-white z-50">
+        <header className="sticky top-0 bg-blue-600  text-white z-50">
             <nav className="flex items-center justify-between px-4 py-4 max-w-screen-xl mx-auto">
                 {/* Mobile Menu Toggle */}
                 <button

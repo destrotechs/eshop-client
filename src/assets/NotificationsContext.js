@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import apiClient from '../auth/apiClient'; // Assuming you are using the same apiClient for making requests
+import { useSelector } from 'react-redux';
+import apiClient from '../auth/apiClient'; 
 
 // Create a context for notifications
 const NotificationsContext = createContext();
@@ -10,6 +11,7 @@ export const useNotifications = () => useContext(NotificationsContext);
 // NotificationsProvider component
 export const NotificationsProvider = ({ children }) => {
     // State to store notifications data
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // Access isLoggedIn from authSlice
     const [notifications, setNotifications] = useState({ items: [], itemCount: 0 });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -17,6 +19,7 @@ export const NotificationsProvider = ({ children }) => {
 
     // Function to fetch notifications from the backend
     const fetchNotifications = async () => {
+      // if (!isLoggedIn) return; // Skip fetching if the user is not logged in
         setLoading(true);
         setError(null); // Clear previous errors
 

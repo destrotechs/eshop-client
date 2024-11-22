@@ -13,7 +13,7 @@ import Toast from '../assets/Toast';
 import ProductCard from './productCard';
 import { eventEmitter } from '../assets/EventEmitter';
 import { useWishlist } from '../assets/WishlistContext'; // Import WishlistContext
-
+import OutputContent from '../assets/product_description';
 const ProductOverview = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -184,7 +184,9 @@ const ProductOverview = () => {
             {/* Product Info */}
             <div className="flex flex-col">
               <h2 className="text-3xl font-bold text-gray-900">{toSentenceCase(product.name)}</h2>
-              <p className="text-gray-500 text-lg my-4">{product.description}</p>
+              <p className="text-gray-500 text-lg my-4">
+                <OutputContent htmlContent={product.description}/>
+              </p>
 
               <div className="flex items-center my-4">
                 <span className="text-2xl font-bold text-indigo-600">
@@ -259,11 +261,12 @@ const ProductOverview = () => {
             <h4 className="font-medium text-white bg-yellow-400 rounded p-4 text-center text-lg">
               Similar Products
             </h4>
-            <div className="flex flex-wrap gap-4 mt-6 ml-20">
+            <div className="flex flex-wrap gap-4 mt-6 mx-auto sm:ml-20">
               {similar_products.map((product, index) => (
                 <ProductCard key={index} product={product} />
               ))}
             </div>
+
           </div>
         </section>
       )}
