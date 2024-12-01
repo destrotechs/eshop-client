@@ -144,7 +144,11 @@ const navigate = new useNavigate();
                       className="w-24 h-24 object-cover rounded-lg"
                     /></Link>
                     <div>
-                      <p className="text-lg font-semibold text-gray-800">{toSentenceCase(item.product.name)}</p>
+                    <p className="text-lg font-semibold text-gray-800">
+                      {`${toSentenceCase(item.product.name)} (${
+                        item.color_option ? toSentenceCase(item.color_option.replace(/['"\]]/g, '')) : ''
+                      })`}
+                    </p>
                       <p className="text-gray-500 mt-1"><FormattedPrice price={item.product.price} /></p>
                     </div>
                   </div>

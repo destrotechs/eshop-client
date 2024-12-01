@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Menu } from '@headlessui/react';
 import {
     ChevronDownIcon, ShoppingCartIcon, ListBulletIcon, HeartIcon,
-    MagnifyingGlassIcon, UserCircleIcon, PowerIcon, XMarkIcon, Bars3Icon,BellIcon,CheckCircleIcon
+    MagnifyingGlassIcon, UserCircleIcon, PowerIcon, XMarkIcon, Bars3Icon,BellIcon,CheckCircleIcon,ChevronDoubleRightIcon
 } from '@heroicons/react/24/outline';
 import apiClient from '../auth/apiClient';
 import { toSentenceCase } from './textUtil';

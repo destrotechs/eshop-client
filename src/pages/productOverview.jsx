@@ -71,7 +71,8 @@ const ProductOverview = () => {
   };
 
   const handleAddToCart = async (product) => {
-    const response = await apiClient.post('/api/shopping/cart/', { 'product_id': product.id });
+    console.log('Add to cart',product);
+    const response = await apiClient.post('/api/shopping/cart/', { 'product_id': product.id,'color_option':product.selectedOptionId });
     if (response.status === 200) {
       const updatedCart = response.data.data;
       setCart(updatedCart);

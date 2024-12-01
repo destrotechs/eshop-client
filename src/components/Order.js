@@ -155,7 +155,7 @@ const Order = ({ order, expandedOrderId, handleToggleExpand, handleOpenReviewMod
         </div>
       )}
 
-      {(order?.payments?.length === 0 && showPay) && (
+      {(order?.payments?.length === 0 && showPay &&order.status!=='Cancelled') && (
         <button
           onClick={() => handlePay(order)}
           className="absolute top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 block sm:hidden group-hover:block"
