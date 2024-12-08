@@ -19,7 +19,7 @@ export const NotificationsProvider = ({ children }) => {
 
     // Function to fetch notifications from the backend
     const fetchNotifications = async () => {
-      // if (!isLoggedIn) return; // Skip fetching if the user is not logged in
+      if (!isLoggedIn) return; // Skip fetching if the user is not logged in
         setLoading(true);
         setError(null); // Clear previous errors
 
@@ -60,7 +60,7 @@ export const NotificationsProvider = ({ children }) => {
     // UseEffect to fetch notifications when the component mounts
     useEffect(() => {
         fetchNotifications();
-    }, []);  // This will run once when the component mounts
+    }, [isLoggedIn]);  // This will run once when the component mounts
 
     return (
         <NotificationsContext.Provider value={{ notificationsCount:notifications.itemCount,notifications, fetchNotifications,markAsRead, loading, error }}>

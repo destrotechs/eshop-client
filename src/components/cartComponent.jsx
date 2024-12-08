@@ -18,7 +18,7 @@ const ShoppingCart = ({title='Shopping Cart',showSubtotalSection=true}) => {
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   
-  const { cart } = useCart();
+  const { fetchCart,cart } = useCart();
   // Fetch cart data from API
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -38,6 +38,7 @@ const ShoppingCart = ({title='Shopping Cart',showSubtotalSection=true}) => {
   const handleQuantityChange = async(itemId, change) => {
     const response = await apiClient.put("/api/shopping/quantity", {'product_id': itemId, 'quantity': change});
     if (response.status === 200) {  
+      await fetchCart();
       const updatedCart = response.data.data;
       // setCart(updatedCart);
 
@@ -45,6 +46,8 @@ const ShoppingCart = ({title='Shopping Cart',showSubtotalSection=true}) => {
       eventEmitter.emit('cartUpdated', updatedCart);
             setToastMessage(response.data.message);
             setShowToast(true);
+
+
         setItems((prevItems) => {
           return prevItems.map((item) => {
             if (item.product.id === itemId) {
@@ -62,6 +65,7 @@ const navigate = new useNavigate();
   const handleRemoveItem = async() => {
     const response = await apiClient.post("/api/shopping/cart/remove", {'product_id': itemToRemove.product.id});
     if (response.status === 200) {  
+      await fetchCart();
       const updatedCart = response.data.data;
       // setCart(updatedCart);
 

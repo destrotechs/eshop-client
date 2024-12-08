@@ -8,7 +8,9 @@ import Toast from '../assets/Toast';
 import { eventEmitter } from '../assets/EventEmitter';
 import { useWishlist } from '../assets/WishlistContext';
 import OutputContent from '../assets/product_description';
+import {useCart} from '../assets/CartContext';
 const ProductCard = ({ product, isFeatured = false }) => {
+  const { fetchCart,cart } = useCart();
     const [toastMessage, setToastMessage] = useState('');
     const [showToast, setShowToast] = useState(false);
     const [expanded, setExpanded] = useState(false);
@@ -29,6 +31,7 @@ const ProductCard = ({ product, isFeatured = false }) => {
     const handleAddToCart = async (product) => {
         const response = await apiClient.post('/api/shopping/cart/', { 'product_id': product.id });
         if (response.status === 200) {
+          await fetchCart();
             // Emit an event to update the cart item count
             eventEmitter.emit('cartUpdated');
             setToastMessage(response.data.message);

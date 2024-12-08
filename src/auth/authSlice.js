@@ -31,6 +31,7 @@ const authSlice = createSlice({
       localStorage.removeItem('accessToken');
       localStorage.removeItem('user');
       sessionStorage.clear(); // Clear session storage
+      window.location.href = '/shop';
   },
   },
 });

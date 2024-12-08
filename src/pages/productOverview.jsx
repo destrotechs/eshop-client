@@ -14,6 +14,7 @@ import ProductCard from './productCard';
 import { eventEmitter } from '../assets/EventEmitter';
 import { useWishlist } from '../assets/WishlistContext'; // Import WishlistContext
 import OutputContent from '../assets/product_description';
+import {useCart} from '../assets/CartContext'; //
 const ProductOverview = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -28,7 +29,7 @@ const ProductOverview = () => {
   const [reviews, setReviews] = useState([]);
 
   const { fetchWishlist } = useWishlist(); // Use WishlistContext
-
+  const {fetchCart} = useCart(); // Use CartContext 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -77,6 +78,7 @@ const ProductOverview = () => {
       const updatedCart = response.data.data;
       setCart(updatedCart);
       eventEmitter.emit('cartUpdated', updatedCart);
+      await fetchCart();
       setToastMessage(response.data.message);
       setShowToast(true);
     } else {

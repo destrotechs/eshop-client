@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8001/', // Change to localhost
+  baseURL: 'http://192.168.153.196:8001/', // Change to localhost
   withCredentials: true, // Ensures cookies are sent with the request
 });
 
@@ -44,6 +44,7 @@ apiClient.interceptors.response.use(
       if (status === 401) {
         const currentPath = window.location.pathname;
         if (currentPath !== '/signin') {
+          sessionStorage.setItem('redirectUrl', currentPath);
           if (showToast) showToast('Unauthorized access. Redirecting to login.', 'error');
           setTimeout(() => {
             window.location.href = '/signin';

@@ -32,7 +32,13 @@ const SignIn = ()=>{
     if (isLoggedIn){
         // Redirect to dashboard page
         console.log('Login successful');
-        navigate('/');
+        const redirectUrl = sessionStorage.getItem('redirectUrl');
+        if (redirectUrl){
+            sessionStorage.removeItem('redirectUrl');
+            window.location.href = redirectUrl;
+        }else{
+            navigate('/');
+        }
     }
     return (
         <div className="min-h-full flex flex-col justify-center">
