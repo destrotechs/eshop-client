@@ -23,6 +23,7 @@ const ProductOverview = () => {
   const [isViewerOpen, setIsViewerOpen] = useState(false); // State for image viewer
   const [selectedImageIndex, setSelectedImageIndex] = useState(0); // State for the selected image index
   const [toastMessage, setToastMessage] = useState('');
+  const [product_name, setProduct_name] = useState('View Product'); //
   const [showToast, setShowToast] = useState(false);
   const [cart, setCart] = useState({ items: {}, subtotal: 0, total: 0, tax: 0, discount: 0 });
   const [reviewsModalOpen, setReviewsModalOpen] = useState(false); // State for reviews modal
@@ -38,6 +39,7 @@ const ProductOverview = () => {
           const productData = response.data.data.product;
           productData.discountedPrice = (1 - (productData.discount / 100)) * productData.price;
           setProduct(productData);
+          setProduct_name(productData.name);
           setSimilarProduct(response.data.data.similar_products);
           setReviews(response.data.data.product.ratings || []); // Set reviews
           setLoading(false);
@@ -117,7 +119,7 @@ const ProductOverview = () => {
   const breadcrumbPaths = [
     { label: 'Home', href: '/' },
     { label: 'Products', href: '/products' },
-    { label: 'View Product' },
+    { label: product_name.toLocaleLowerCase() },
   ];
 
   const colorsString = "black,red,green,blue,orange,yellow,purple";

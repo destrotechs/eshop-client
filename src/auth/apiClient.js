@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const apiClient = axios.create({
-  baseURL: 'http://192.168.153.196:8001/', // Change to localhost
+  baseURL: 'http://192.168.142.196:8001/', // Change to localhost
   withCredentials: true, // Ensures cookies are sent with the request
 });
 
